@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 15:11:07 by ebellon           #+#    #+#             */
-/*   Updated: 2021/03/19 14:02:06 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/03/22 13:11:37 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,14 +144,14 @@ void	ft_split_line(char *str, t_parse_map *cub)
 		ft_parse_res(strs, cub);
 	if (ft_strncmp(strs[0], "NO", ft_strlen(strs[0])) == 0)
 		ft_parse_no_texture(strs, cub);
-	if (ft_strncmp(strs[0], "SO", ft_strlen(strs[0])) == 0)
+	if (ft_strncmp(strs[0], "S", ft_strlen(strs[0])) == 0)
+		ft_parse_s_texture(strs, cub);
+	else if (ft_strncmp(strs[0], "SO", ft_strlen(strs[0])) == 0)
 		ft_parse_so_texture(strs, cub);
 	if (ft_strncmp(strs[0], "WE", ft_strlen(strs[0])) == 0)
 		ft_parse_we_texture(strs, cub);
 	if (ft_strncmp(strs[0], "EA", ft_strlen(strs[0])) == 0)
 		ft_parse_ea_texture(strs, cub);
-	if (ft_strncmp(strs[0], "S", ft_strlen(strs[0])) == 0)
-		ft_parse_s_texture(strs, cub);
 	if (ft_strncmp(strs[0], "F", ft_strlen(strs[0])) == 0)
 		ft_parse_rgb_f(strs, cub);
 	if (ft_strncmp(strs[0], "C", ft_strlen(strs[0])) == 0)

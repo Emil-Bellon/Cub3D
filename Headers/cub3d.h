@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 15:13:09 by ebellon           #+#    #+#             */
-/*   Updated: 2021/03/19 15:55:20 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/03/22 11:58:03 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct	s_box
 	int	type;
 
 	int	height;
-	int	start;
+	int	starrt;
 }				t_box;
 
 typedef struct	s_eye
@@ -41,6 +41,9 @@ typedef struct	s_eye
 
 typedef struct	s_data
 {
+	int		map_x;
+	int		map_y;
+
 	int		res_x;
 	int		res_y;
 
