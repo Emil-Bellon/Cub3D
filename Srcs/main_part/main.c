@@ -6,12 +6,13 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 15:12:07 by ebellon           #+#    #+#             */
-/*   Updated: 2021/03/19 16:22:48 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/03/19 17:08:37 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Headers/cub3d.h"
 
+void	ft_printf_cub(t_parse_map cub)
 {
 	int	i;
 
@@ -43,10 +44,10 @@ void	ft_printf_map(t_box **map, t_parse_map cub)
 
 	x = 0;
 	y = 0;
-	while (y <= cub.map_y)
+	while (y < cub.map_y)
 	{
 		x = 0;
-		while (x <= cub.map_x)
+		while (x < cub.map_x)
 		{
 			printf("%d", map[y][x].type);
 			x++;

@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 12:44:25 by ebellon           #+#    #+#             */
-/*   Updated: 2021/03/19 16:23:38 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/03/19 17:10:54 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ t_box	**ft_init_3d_map(t_parse_map *cub)
 	t_box	**map;
 	int		y;
 
-	map = ft_calloc(cub->map_y + 1, sizeof(t_box *));
+	map = ft_calloc(cub->map_y, sizeof(t_box *));
 	if (!map)
 		ft_exit();
 	y = 0;
-	while (map[y])
+	while (y < cub->map_y)
 	{
-		map[y] = ft_calloc(cub->map_x + 1, sizeof(t_box));
+		map[y] = ft_calloc(cub->map_x, sizeof(t_box));
 		if (!map[y])
 		{
 			ft_free_3d_map(map);
