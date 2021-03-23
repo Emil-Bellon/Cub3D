@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 15:12:07 by ebellon           #+#    #+#             */
-/*   Updated: 2021/03/23 13:57:14 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/03/23 17:26:58 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int		main(int ac, char **av)
 	ft_printf_data(data);
 	ft_printf_map(map, cub);
 	ft_printf_eye(eye);
-	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, data.map_x, data.map_y, "lol");
+	//mlx_ptr = mlx_init();
+	//win_ptr = mlx_new_window(mlx_ptr, data.map_x, data.map_y, "lol");
 	return (0);
 }
