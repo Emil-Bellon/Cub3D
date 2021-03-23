@@ -6,11 +6,11 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 10:40:05 by pthomas           #+#    #+#             */
-/*   Updated: 2021/03/18 15:05:04 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/03/23 13:47:26 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../Headers/cub3d.h"
+#include "../Headers/cub3d.h"
 
 char	*ft_strjoin_gnl(const char *s1, const char *s2)
 {

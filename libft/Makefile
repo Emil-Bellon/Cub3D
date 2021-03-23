@@ -6,11 +6,11 @@
 #    By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/24 18:26:14 by ebellon           #+#    #+#              #
-#    Updated: 2020/12/18 17:47:07 by ebellon          ###   ########lyon.fr    #
+#    Updated: 2021/03/23 13:32:22 by ebellon          ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS		= 	ft_atoi.c \
+SRCS		=	ft_atoi.c \
 				ft_bzero.c \
 				ft_calloc.c \
 				ft_isalnum.c \
@@ -43,9 +43,8 @@ SRCS		= 	ft_atoi.c \
 				ft_putchar_fd.c \
 				ft_putstr_fd.c \
 				ft_putendl_fd.c \
-				ft_putnbr_fd.c 
-
-BSRCS		=	ft_lstnew.c \
+				ft_putnbr_fd.c \
+				ft_lstnew.c \
 				ft_lstsize.c \
 				ft_lstlast.c \
 				ft_lstdelone.c \
@@ -53,11 +52,10 @@ BSRCS		=	ft_lstnew.c \
 				ft_lstiter.c \
 				ft_lstmap.c \
 				ft_lstadd_front.c \
-				ft_lstadd_back.c
+				ft_lstadd_back.c \
+				get_next_line.c
 
 OBJS		= ${SRCS:.c=.o}
-
-BOBJS		= ${BSRCS:.c=.o}
 
 NAME		= libft.a
 
@@ -77,9 +75,6 @@ all:		${NAME}
 ${NAME}:	${OBJS}
 			ar -rc ${NAME} $?
 
-bonus:		${BOBJS}
-			ar -rc ${NAME} $?
-
 clean:
 			${RM} ${OBJS} ${BOBJS}
 
@@ -88,4 +83,4 @@ fclean:		clean
 
 re:			fclean all
 
-.PHONY: 	all clean fclean re bonus
+.PHONY: 	all clean fclean re

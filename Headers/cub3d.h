@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 15:13:09 by ebellon           #+#    #+#             */
-/*   Updated: 2021/03/22 11:58:03 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/03/23 15:30:40 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <math.h>
-# include "../Srcs/libft/libft.h"
+# include "../minilibx/mlx.h"
+# include "../libft/libft.h"
 
 # define PI 3.14
 
@@ -66,7 +67,7 @@ typedef struct	s_parse_map
 	char	*we;
 	char	*ea;
 	char	*sprite;
-	
+
 	char	**map;
 	int		map_x;
 	int		map_y;

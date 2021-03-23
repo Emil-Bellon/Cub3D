@@ -6,11 +6,11 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 15:12:07 by ebellon           #+#    #+#             */
-/*   Updated: 2021/03/22 13:16:51 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/03/23 13:57:14 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../Headers/cub3d.h"
+#include "../Headers/cub3d.h"
 
 void	ft_printf_cub(t_parse_map cub)
 {
@@ -94,12 +94,17 @@ int		main(int ac, char **av)
 	t_eye		eye;
 	t_box		**map;
 	t_data		data;
-	
+	void		*mlx_ptr;
+	void		*win_ptr;
+
+	(void)ac;
 	ft_parse_cub(av[1], &cub);
 	map = ft_fill_data_3d_map(&cub, &data, &eye);
 	//ft_printf_cub(cub);
 	ft_printf_data(data);
 	ft_printf_map(map, cub);
 	ft_printf_eye(eye);
+	mlx_ptr = mlx_init();
+	win_ptr = mlx_new_window(mlx_ptr, data.map_x, data.map_y, "lol");
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 12:44:25 by ebellon           #+#    #+#             */
-/*   Updated: 2021/03/22 13:11:09 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/03/23 13:54:49 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,14 @@ void	ft_init_eye1(t_eye *eye, char c, int x, int y)
 		eye->x = x;
 		eye->y = y;
 		eye->z = 1;
-		eye->alpha = (3*PI)/2;
+		eye->alpha = (3 * PI) / 2;
 	}
 	else if (c == 'S')
 	{
 		eye->x = x;
 		eye->y = y;
 		eye->z = 1;
-		eye->alpha = PI/2;
+		eye->alpha = PI / 2;
 	}
 	else
 		ft_init_eye2(eye, c, x, y);
@@ -97,24 +97,22 @@ t_box	ft_fill_box(char c, int x, int y, t_eye *eye)
 	t_box	box;
 	int		height[10];
 	int		start[10];
-	
+
 	ft_init_tabs(height, start);
-	if (c)
+	box = (t_box){-1, -1, -1};
+	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 	{
-		if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
-		{
-			ft_init_eye1(eye, c, x, y);
-			box = (t_box){0, 0, 0};
-		}
-		else if (ft_isdigit(c))
-			box = (t_box){c - '0', height[c - '0'], start[c - '0']};
-		else if (c == ' ')
-		{
-			box = (t_box){0, 0, 0};
-		}
-		else
-			ft_exit();
+		ft_init_eye1(eye, c, x, y);
+		box = (t_box){0, 0, 0};
 	}
+	else if (ft_isdigit(c))
+		box = (t_box){c - '0', height[c - '0'], start[c - '0']};
+	else if (c == ' ')
+	{
+		box = (t_box){0, 0, 0};
+	}
+	else
+		ft_exit();
 	return (box);
 }
 
@@ -145,7 +143,8 @@ void	ft_fill_3d_map(t_box **map, t_eye *eye, t_parse_map *cub)
 void	ft_fill_data_and_free(t_data *data, t_parse_map *cub)
 {
 	int	i;
-	
+
+	i = 0;
 	data->map_x = cub->map_x;
 	data->map_y = cub->map_y;
 	data->res_x = cub->res_x;

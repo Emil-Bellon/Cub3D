@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 15:11:07 by ebellon           #+#    #+#             */
-/*   Updated: 2021/03/22 13:11:37 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/03/23 13:17:40 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ int		ft_get_size(char *line, int fd)
 {
 	int	map_size;
 	int	ret;
-	
+
 	map_size = 0;
 	if (line[0] == '1' || line[0] == ' ')
 		map_size++;
@@ -210,7 +210,7 @@ void	ft_set_char_map(t_parse_map *cub, char *path)
 	int		fd;
 	char	*line;
 	int		i;
-	
+
 	fd = open(path, O_RDONLY);
 	i = 0;
 	cub->map = ft_calloc(cub->map_y + 1, sizeof(char *));
@@ -243,7 +243,7 @@ void	ft_get_map_x(t_parse_map *cub)
 	i = 0;
 	while (cub->map[i])
 	{
-		if (ft_strlen(cub->map[i]) > cub->map_x)
+		if ((int)ft_strlen(cub->map[i]) > cub->map_x)
 			cub->map_x = ft_strlen(cub->map[i]);
 		i++;
 	}
