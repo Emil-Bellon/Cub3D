@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 15:12:07 by ebellon           #+#    #+#             */
-/*   Updated: 2021/03/23 17:26:58 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/03/24 15:49:04 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,10 @@ void	ft_printf_map(t_box **map, t_parse_map cub)
 		x = 0;
 		while (x < cub.map_x)
 		{
-			printf("[%d]", map[y][x].type);
+			if (map[y][x].type == 0)
+				printf("[ ]");
+			else
+				printf("[%d]", map[y][x].type);
 			x++;
 		}
 		y++;
@@ -88,6 +91,66 @@ void	ft_printf_eye(t_eye eye)
 	printf("-------------------------------------------------\n");
 }
 
+void            my_mlx_pixel_put(t_mlxdata *data, int x, int y, int color)
+{
+    char    *dst;
+
+    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+    *(unsigned int*)dst = color;
+}
+
+void	draw_square_from_topleft(t_mlxdata data, int topleft_x, int topleft_y, int size_in_pix)
+{
+	for (int i = 0; i < size_in_pix; i++)
+	{
+		my_mlx_pixel_put(&data, topleft_x + i, topleft_y, 0x00FF0000);
+		my_mlx_pixel_put(&data, topleft_x + i, topleft_y + size_in_pix, 0x00FF0000);
+		my_mlx_pixel_put(&data, topleft_x + size_in_pix, topleft_y + i, 0x00FF0000);
+		my_mlx_pixel_put(&data, topleft_x, topleft_y + i, 0x00FF0000);
+
+	}
+}
+
+void	test_draw1(t_mlxdata data, int topleft_x, int topleft_y, int size_in_pix)
+{
+	int	y;
+	int	x;
+	int	color;
+
+	y = -1;
+	color = 1;
+	while (++y < size_in_pix)
+	{
+		x = -1;
+		while (++x < size_in_pix)
+		{
+			if (x % 2 == 0 && y % 2 != 0)
+				my_mlx_pixel_put(&data, topleft_x + x, topleft_y + y, color);
+			color *= 3;
+		}
+	}
+}
+
+void	test_draw2(t_mlxdata data, int topleft_x, int topleft_y, int size_in_pix)
+{
+	int	y;
+	int	x;
+	int	color;
+
+	y = -1;
+	color = 1;
+	while (++y < size_in_pix)
+	{
+		x = -1;
+		while (++x < size_in_pix)
+		{
+			if (x % 5 != 0 && y % 5 != 0)
+				my_mlx_pixel_put(&data, topleft_x + x, topleft_y + y, color);
+			color *= 5;
+		}
+	}
+}
+
 int		main(int ac, char **av)
 {
 	t_parse_map	cub;
@@ -95,16 +158,46 @@ int		main(int ac, char **av)
 	t_box		**map;
 	t_data		data;
 	void		*mlx_ptr;
-	void		*win_ptr;
+	void		*mlx_win;
+	t_mlxdata	img;
+	int			y;
+	int			x;
+	int			size;
 
 	(void)ac;
+	y = 0;
+	x = 0;
+	size = 50;
 	ft_parse_cub(av[1], &cub);
 	map = ft_fill_data_3d_map(&cub, &data, &eye);
 	//ft_printf_cub(cub);
 	ft_printf_data(data);
 	ft_printf_map(map, cub);
 	ft_printf_eye(eye);
-	//mlx_ptr = mlx_init();
-	//win_ptr = mlx_new_window(mlx_ptr, data.map_x, data.map_y, "lol");
+
+	mlx_ptr = mlx_init();
+	mlx_win = mlx_new_window(mlx_ptr, 1920, 1080, "Cub3D !");
+	img.img = mlx_new_image(mlx_ptr, 1920, 1080);
+	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
+								&img.endian);
+	//test_draw(img, 0, 0, 1080);
+
+	while (y < data.map_y)
+	{
+		x = 0;
+		while (x < data.map_x)
+		{
+			if (map[y][x].type == 1)
+				test_draw2(img, (x * size), (y * size), size);
+			else
+				test_draw1(img, (x * size), (y * size), size);
+			x++;
+		}
+		y++;
+	}
+	
+	mlx_put_image_to_window(mlx_ptr, mlx_win, img.img, 0, 0);
+	mlx_loop(mlx_ptr);
+	
 	return (0);
 }

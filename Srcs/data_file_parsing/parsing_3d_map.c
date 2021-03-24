@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 12:44:25 by ebellon           #+#    #+#             */
-/*   Updated: 2021/03/23 13:54:49 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/03/24 15:42:09 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ t_box	ft_fill_box(char c, int x, int y, t_eye *eye)
 		box = (t_box){0, 0, 0};
 	}
 	else
-		ft_exit();
+		ft_exit2(c);
 	return (box);
 }
 
@@ -128,8 +128,9 @@ void	ft_fill_3d_map(t_box **map, t_eye *eye, t_parse_map *cub)
 		x = 0;
 		while (x < cub->map_x)
 		{
-			if (cub->map[y][x])
+			if (cub->map[y][x] && x < (int)ft_strlen(cub->map[y]))
 			{
+				//printf("x = %d, y = %d ---> |%c|\n", x, y, cub->map[y][x]);
 				map[y][x] = ft_fill_box(cub->map[y][x], x, y, eye);
 			}
 			else

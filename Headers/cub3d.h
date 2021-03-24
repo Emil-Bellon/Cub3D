@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 15:13:09 by ebellon           #+#    #+#             */
-/*   Updated: 2021/03/23 15:30:40 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/03/24 15:12:15 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,19 @@ typedef struct	s_parse_map
 	int		map_y;
 }				t_parse_map;
 
+typedef struct	s_mlxdata
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_mlxdata;
+
 void			ft_parse_cub(char *path, t_parse_map *cub);
 int				get_next_line(int fd, char **line);
 void			ft_exit();
+void			ft_exit2(char c);
 t_box			**ft_fill_data_3d_map(t_parse_map *cub, t_data *data, t_eye *eye);
 void			ft_printf_cub(t_parse_map cub);
 
