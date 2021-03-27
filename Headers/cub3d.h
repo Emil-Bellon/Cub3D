@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 15:13:09 by ebellon           #+#    #+#             */
-/*   Updated: 2021/03/24 15:12:15 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/03/27 17:01:45 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,18 @@ typedef struct	s_mlxdata
 	int		line_length;
 	int		endian;
 }				t_mlxdata;
+
+typedef struct	s_all_data
+{
+	t_mlxdata	mlx_data;
+	t_data		data;
+	t_eye		eye;
+	t_box		**map;
+	void		*mlx_ptr;
+	void		*mlx_win;
+	int			frame;
+}				t_all_data;
+
 
 void			ft_parse_cub(char *path, t_parse_map *cub);
 int				get_next_line(int fd, char **line);
