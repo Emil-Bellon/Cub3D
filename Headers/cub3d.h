@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 15:13:09 by ebellon           #+#    #+#             */
-/*   Updated: 2021/03/27 17:01:45 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/03/28 17:16:30 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,14 @@ typedef struct	s_box
 	int	type;
 
 	int	height;
-	int	starrt;
+	int	start;
 }				t_box;
+
+typedef struct	s_point
+{
+	int	x;
+	int	y;
+}				t_point;
 
 typedef struct	s_eye
 {
@@ -93,7 +99,8 @@ typedef struct	s_all_data
 	int			frame;
 }				t_all_data;
 
-
+void			my_mlx_pixel_put(t_mlxdata *data, int x, int y, int color);
+void			draw_line(t_point p0, float alpha, t_all_data *mlx, int rgb);
 void			ft_parse_cub(char *path, t_parse_map *cub);
 int				get_next_line(int fd, char **line);
 void			ft_exit();

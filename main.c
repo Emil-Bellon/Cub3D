@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 15:12:07 by ebellon           #+#    #+#             */
-/*   Updated: 2021/03/27 18:16:59 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/03/28 18:01:00 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,15 +170,52 @@ void	test_draw3(t_all_data *data, int topleft_x, int topleft_y, int size_in_pix)
 	}
 }
 
+void	draw_col(t_all_data *data, int topleft_x, int topleft_y, int size_in_pix)
+{
+	int	y;
+	int	color;
+
+	y = -1;
+	color = 0x0000FF00;
+	while (++y < size_in_pix)
+		my_mlx_pixel_put(&(data->mlx_data), topleft_x, topleft_y + y, color);
+}
+
+void	draw_ray(t_all_data *data, int topleft_x, int topleft_y, float a)
+{
+	float	y;
+	float	x;
+	float	b;
+	int		color;
+
+	color = 0x00FF0000;
+	y = -1;
+	x = -1;
+	b = topleft_y - a * topleft_x;
+	while (++y < data->data.res_y)
+	{
+		x = -1;
+		while (++x < data->data.res_x)
+			if (y == a * x + b)
+				my_mlx_pixel_put(&(data->mlx_data), x, y, color);
+	}
+}
+
 int		draw_minimap(t_all_data *a_data)
 {
 	int			y;
 	int			x;
+	int			i;
 	int			size;
+	t_point		p0;
+	t_point		p1;
 	
 	y = 0;
 	size = 50;
 	x = 0;
+	i = 0;
+	p0 = (t_point){a_data->eye.x * size + size / 2, a_data->eye.y * size + size / 2};
+	p1 = (t_point){100,100};
 	while (y < a_data->data.map_y)
 	{
 		x = 0;
@@ -193,8 +230,13 @@ int		draw_minimap(t_all_data *a_data)
 		y++;
 	}
 	test_draw3(a_data, ((a_data->eye.x * size) + size / 4), ((a_data->eye.y * size) + size / 4), size / 2);
+	// while (i < 500)
+	// 	draw_col(a_data, 1250 + i++, 0, a_data->data.res_y);
+	draw_line(p0, a_data->eye.alpha, a_data, 0x00FF00FF);
+	// draw_ray(a_data, ((a_data->eye.x * size) + size / 2), ((a_data->eye.y * size) + size / 2), 5);
+	// draw_ray(a_data, ((a_data->eye.x * size) + size / 2), ((a_data->eye.y * size) + size / 2), -1);
 	mlx_put_image_to_window(a_data->mlx_ptr, a_data->mlx_win, a_data->mlx_data.img, 0, 0);
-	a_data->frame += 0x08080808;
+	a_data->frame += 0x02020202;
 	if (a_data->frame > 0xFEFEFEFE)
 		a_data->frame = 0x01010101;
 	return (0);
@@ -204,10 +246,6 @@ int		main(int ac, char **av)
 {
 	t_all_data	a_data;
 	t_parse_map	cub;
-	// t_eye		eye;
-	// t_box		**map;
-	// t_data		data;
-	// t_mlxdata	img;
 	void		*mlx_ptr;
 	void		*mlx_win;
 	
@@ -242,6 +280,7 @@ int		main(int ac, char **av)
 	// }
 	a_data.frame = 0x01010101;
 	mlx_put_image_to_window(a_data.mlx_ptr, a_data.mlx_win, a_data.mlx_data.img, 0, 0);
+	mlx_key_hook(a_data.mlx_ptr, )
 	mlx_loop_hook(a_data.mlx_ptr, draw_minimap, &a_data);
 	mlx_loop(a_data.mlx_ptr);
 	

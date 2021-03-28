@@ -6,14 +6,16 @@
 #    By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/23 12:34:52 by ebellon           #+#    #+#              #
-#    Updated: 2021/03/27 18:27:13 by ebellon          ###   ########lyon.fr    #
+#    Updated: 2021/03/28 17:02:12 by ebellon          ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= cub3d
 FILES			=	data_file_parsing/parsing_3d_map.c \
 					data_file_parsing/parsing1.c \
-					shutdown/ft_shutdown.c
+					shutdown/ft_shutdown.c \
+					draw_ray/ray.c
+
 INC_FILES		= cub3d.h
 INC_PATH		= ./Headers/
 INC				= $(addprefix ${INC_PATH}, ${INC_FILES})
