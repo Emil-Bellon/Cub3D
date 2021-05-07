@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 14:16:46 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/06 16:48:10 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/07 17:45:18 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 void	ft_printf_data(t_data data)
 {
+	int	i;
+
+	i = 0;
 	printf("-------------------------------------------------\n");
 	printf("|*| DATA : \n|*|\n");
 	printf("|*| res = |%d * %d|\n|*|\n", data.rx, data.ry);
@@ -28,7 +31,18 @@ void	ft_printf_data(t_data data)
 	printf("|*| we = |%s|\n", data.we);
 	printf("|*| ea = |%s|\n", data.ea);
 	printf("|*| s  = |%s|\n|*|\n", data.sprite);
-	//printf("|*| MAP : x = %d / y = %d\n", data.map_x, data.map_y);
+	printf("|*| MAP : x = %d / y = %d\n", data.map_x, data.map_y);
+	while (data.map[i])
+		printf("|*| --- |%s|\n", data.map[i++]);
+	printf("-------------------------------------------------\n");
+}
+
+void	ft_printf_player(t_player player)
+{
+	printf("-------------------------------------------------\n");
+	printf("|*| PLAYER : \n|*|\n");
+	printf("|*| X = %f\n", player.x);
+	printf("|*| Y = %f		ALPHA = %f\n", player.y, player.alpha);
 	printf("-------------------------------------------------\n");
 }
 
@@ -36,8 +50,18 @@ int	main(int ac, char **av)
 {
 	t_game	game;
 	
-	(void)ac;
+	if (ac != 2)
+		ft_error("Cub3D need exactly 1 argument", &game, NULL);
 	game.stop = 0;
+	game.player.alive = 0;
 	ft_parse_main(av[1], &game);
+	ft_check_data(&game);
 	ft_printf_data(game.data);
+	ft_printf_player(game.player);
+	free(game.data.no);
+	free(game.data.so);
+	free(game.data.we);
+	free(game.data.ea);
+	free(game.data.sprite);
+	ft_free_strs(game.data.map);
 }

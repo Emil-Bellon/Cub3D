@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 15:13:09 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/06 16:47:57 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/07 17:46:30 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct	s_key
 
 typedef struct	s_player
 {
+	int		alive;
 	float	x;
 	float	y;
 	float	alpha;
@@ -107,10 +108,18 @@ void	ft_parse_so_txtr(char *line, t_game *game);
 void	ft_parse_ea_txtr(char *line, t_game *game);
 void	ft_parse_we_txtr(char *line, t_game *game);
 void	ft_parse_s_txtr(char *line, t_game *game);
+void	ft_free_strs(char **tab);
 void	ft_parse_res(char *line, t_game *game);
 void	ft_parse_rgb_f(char *line, t_game *game);
 void	ft_parse_rgb_c(char *line, t_game *game);
+int		ft_strslen(char **strs);
+int		ft_is_char_map(char c);
+char	**ft_strsjoin(char **s1, char *s2);
 void	ft_parse_main(char *path, t_game *game);
-void	ft_error(char *error_msg, t_game *game);
+void	ft_error(char *error_msg, t_game *game, void *data_to_free);
+void	ft_error_res(char **res, t_game *game, char *line);
+void	ft_map_error(t_game *game);
+void	ft_reset_map(t_game *game);
+void	ft_check_data(t_game *game);
 
 #endif

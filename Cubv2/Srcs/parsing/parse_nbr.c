@@ -6,21 +6,11 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 13:40:24 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/06 16:46:03 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/07 13:12:47 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Headers/cub3d.h"
-
-static void	ft_free_strs(char **tab)
-{
-	int	i;
-
-	i = 0;
-	while (tab[i])
-		free(tab[i++]);
-	free(tab);
-}
 
 static int	ft_rgb_ok(char **rgb)
 {
@@ -39,6 +29,16 @@ static int	ft_rgb_ok(char **rgb)
 	return (1);
 }
 
+void	ft_free_strs(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+		free(tab[i++]);
+	free(tab);
+}
+
 void		ft_parse_res(char *line, t_game *game)
 {
 	char	**res;
@@ -49,18 +49,17 @@ void		ft_parse_res(char *line, t_game *game)
 	while (res[i])
 		i++;
 	if (i != 3)
-		ft_error("There is a problem with the Resolution", game);
+		ft_error_res(res, game, line);
 	i = 0;
 	while (res[1][i])
 		if (!(ft_isdigit(res[1][i++])))
-			ft_error("There is a problem with the x Resolution", game);
+			ft_error_res(res, game, line);
 	i = 0;
 	while (res[2][i])
 		if (!(ft_isdigit(res[2][i++])))
-			ft_error("There is a problem with the y Resolution", game);
+			ft_error_res(res, game, line);
 	game->data.rx = ft_atoi(res[1]);
 	game->data.ry = ft_atoi(res[2]);
-	free(line);
 	ft_free_strs(res);
 }
 
@@ -78,14 +77,14 @@ void		ft_parse_rgb_f(char *line, t_game *game)
 	i = 0;
 	while (rgb[i])
 		i++;
-	if (i != 3)
-		ft_error("There is a problem with the F rgb", game);
-	if (ft_rgb_ok(rgb) == 0)
-		ft_error("There is a problem with the digits of F rgb", game);
-	game->data.rgb_f = (ft_atoi(rgb[0]) * (256 * 256))
-						+ (ft_atoi(rgb[1]) * 256) + ft_atoi(rgb[2]);
+	if (i != 3 || ft_rgb_ok(rgb) == 0)
+	{
+		ft_free_strs(rgb);
+		ft_error("There is a problem with the F rgb", game, line);
+	}
+	game->data.rgb_f = (ft_atoi(rgb[0]) << 16)
+						+ (ft_atoi(rgb[1]) << 8) + ft_atoi(rgb[2]);
 	free(str);
-	free(line);
 	ft_free_strs(rgb);
 }
 
@@ -103,13 +102,13 @@ void		ft_parse_rgb_c(char *line, t_game *game)
 	i = 0;
 	while (rgb[i])
 		i++;
-	if (i != 3)
-		ft_error("There is a problem with the C rgb", game);
-	if (!(ft_rgb_ok(rgb)))
-		ft_error("There is a problem with the digits of C rgb", game);
+	if (i != 3 || ft_rgb_ok(rgb) == 0)
+	{
+		ft_free_strs(rgb);
+		ft_error("There is a problem with the C rgb", game, line);
+	}
 	game->data.rgb_c = (ft_atoi(rgb[0]) * (256 * 256))
 						+ (ft_atoi(rgb[1]) * 256) + ft_atoi(rgb[2]);
 	free(str);
-	free(line);
 	ft_free_strs(rgb);
 }
