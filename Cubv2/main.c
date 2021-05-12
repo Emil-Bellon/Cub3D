@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 14:16:46 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/12 16:27:58 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/12 16:50:55 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ t_size_wall	ft_get_wall_size(int x_win, t_game *game)
 		size_wall.start = 0;
 	size_wall.stop = game->data.ry / 2 + height / 2;
 	if (size_wall.stop >= game->data.ry)
-		size_wall.stop = game->data.ry - 1;
+		size_wall.stop = game->data.ry;
 	return (size_wall);
 }
 
@@ -160,7 +160,6 @@ int		main(int ac, char **av)
 		ft_error("Cub3D need exactly 1 argument", &game, NULL);
 	ft_parse_main(av[1], &game);
 	ft_check_data(&game);
-	ft_printf_data(game.data);
 
 	game.mlx.mlx_ptr = mlx_init();
 	game.mlx.mlx_win = mlx_new_window(game.mlx.mlx_ptr, game.data.rx, game.data.ry, "Cub3D !");

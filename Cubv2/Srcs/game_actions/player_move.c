@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 14:11:21 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/12 16:17:40 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/12 16:47:04 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void		move_player3(t_game *game)
 		game->player.planeX = game->player.planeX * cos(-ROTATE) - game->player.planeY * sin(-ROTATE);
 		game->player.planeY = oldPlaneX * sin(-ROTATE) + game->player.planeY * cos(-ROTATE);
 	}
-	game->data.map[(int)game->player.y][(int)game->player.x] = 'J';
+	game->data.map[(int)game->player.y][(int)game->player.x] = '*';
 }
 
 static void		move_player2(t_game *game)

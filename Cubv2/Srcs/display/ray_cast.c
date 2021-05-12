@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 12:24:22 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/12 16:12:02 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/12 16:49:03 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ double			ft_dda(t_game *game, int x_win)
 			var.mapY += var.stepY;
 			var.side = 1;
 		}
-		if (game->data.map[var.mapY][var.mapX] == '1')
+		if (game->data.map[var.mapY][var.mapX] != ' ')
 			var.hit = 1;
 	}
 	return (ft_dist(var));
