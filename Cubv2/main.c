@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 14:16:46 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/07 17:45:18 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/12 16:27:58 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,134 @@ void	ft_printf_player(t_player player)
 	printf("-------------------------------------------------\n");
 }
 
-int	main(int ac, char **av)
+void	ft_init_game(t_game *game)
+{
+	game->stop = 0;
+	game->player.alive = 0;
+	game->player.x = 0;
+	game->player.y = 0;
+	game->player.alpha = 0;
+	game->data.no = NULL;
+	game->data.so = NULL;
+	game->data.ea = NULL;
+	game->data.we = NULL;
+	game->data.sprite = NULL;
+	game->data.map = NULL;
+	game->data.key = (t_key){0, 0, 0, 0, 0, 0};
+}
+
+void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
+}
+
+void	clean_window(t_game *game)
+{
+	int		y;
+	int		x;
+	int		color;
+
+	color = 0x00000000;
+	y = -1;
+	x = -1;
+	while (++y < game->data.ry)
+	{
+		x = -1;
+		while (++x < game->data.ry)
+			my_mlx_pixel_put(&(game->mlx), x, y, color);
+	}
+}
+
+void	draw_col(t_col col, t_game *game)
+{
+	int	size;
+
+	size = col.start;
+	while (size < col.size_max)
+		my_mlx_pixel_put(&(game->mlx), col.x, size++, col.color);
+}
+
+t_size_wall	ft_get_wall_size(int x_win, t_game *game)
+{
+	t_size_wall	size_wall;
+	int			height;
+
+	height = (int)(game->data.ry / ft_dda(game, x_win));
+	size_wall.start = game->data.ry / 2 - height / 2;
+	if (size_wall.start < 0)
+		size_wall.start = 0;
+	size_wall.stop = game->data.ry / 2 + height / 2;
+	if (size_wall.stop >= game->data.ry)
+		size_wall.stop = game->data.ry - 1;
+	return (size_wall);
+}
+
+void	draw_screen(t_game *game)
+{
+	int			x_win;
+	t_col		col;
+	t_size_wall	size_wall;
+	
+	x_win = 0;
+	while (x_win < game->data.rx)
+	{
+		size_wall = ft_get_wall_size(x_win, game);
+		col = (t_col){x_win, 0, size_wall.start, game->data.rgb_c};
+		draw_col(col, game);
+		col = (t_col){x_win, size_wall.start, size_wall.stop, 0x00000000};
+		draw_col(col, game);
+		col = (t_col){x_win, size_wall.stop, game->data.ry, game->data.rgb_f};
+		draw_col(col, game);
+		x_win++;
+	}
+}
+
+int		ft_game(t_game *game)
+{
+	int		y_map;
+
+	y_map = 0;
+	if (game->data.key.esc == 1)
+		ft_exit(game);
+	clean_window(game);
+	move_player(game);
+	draw_screen(game);
+
+	printf("\033[H\033[2J");
+	while (y_map < game->data.map_y)
+		printf("%-*s\n", game->data.map_x, game->data.map[y_map++]);
+
+	mlx_put_image_to_window(game->mlx.mlx_ptr, game->mlx.mlx_win, game->mlx.img, 0, 0);
+	mlx_do_sync(game->mlx.mlx_ptr);
+	return (0);
+}
+
+int		main(int ac, char **av)
 {
 	t_game	game;
 	
+	ft_init_game(&game);
 	if (ac != 2)
 		ft_error("Cub3D need exactly 1 argument", &game, NULL);
-	game.stop = 0;
-	game.player.alive = 0;
 	ft_parse_main(av[1], &game);
 	ft_check_data(&game);
 	ft_printf_data(game.data);
-	ft_printf_player(game.player);
+
+	game.mlx.mlx_ptr = mlx_init();
+	game.mlx.mlx_win = mlx_new_window(game.mlx.mlx_ptr, game.data.rx, game.data.ry, "Cub3D !");
+	game.mlx.img = mlx_new_image(game.mlx.mlx_ptr, game.data.rx, game.data.ry);
+	game.mlx.addr = mlx_get_data_addr(game.mlx.img, &game.mlx.bits_per_pixel, &game.mlx.line_length,
+								&game.mlx.endian);
+
+	mlx_put_image_to_window(game.mlx.mlx_ptr, game.mlx.mlx_win, game.mlx.img, 0, 0);
+	mlx_hook(game.mlx.mlx_win, 02, 1L << 0, key_pressed, &game);
+	mlx_hook(game.mlx.mlx_win, 03, 1L << 1, key_released, &game);
+	mlx_loop_hook(game.mlx.mlx_ptr, ft_game, &game);
+	mlx_loop(game.mlx.mlx_ptr);
+
 	free(game.data.no);
 	free(game.data.so);
 	free(game.data.we);

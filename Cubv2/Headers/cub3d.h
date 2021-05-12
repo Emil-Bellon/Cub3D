@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 15:13:09 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/07 17:46:30 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/12 16:04:32 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include "../minilibx/mlx.h"
 # include "../libft/libft.h"
 
-# define PI 3.14
+# define PI 3.14159265359
 # define W 13
 # define A 0
 # define S 1
@@ -29,15 +29,49 @@
 # define L_ARR 123
 # define R_ARR 124
 # define ESC 53
-# define SPEED 0.2
+# define SPEED 0.33
 # define ROTATE 0.157
 # define SIZE 50
 
-typedef struct	s_point
+typedef struct	s_col
 {
-	float	x;
-	float	y;
-}				t_point;
+	int	x;
+	int	start;
+	int	size_max;
+	int	color;
+}				t_col;
+
+typedef struct	s_size_wall
+{
+	int	start;
+	int	stop;
+}				t_size_wall;
+
+typedef struct	s_rc_var
+{
+	double	posX;
+	double	posY;
+	double	dirX;
+	double	dirY;
+	double	planeX;
+	double	planeY;
+
+	double	cameraX;
+	double	rayDirX;
+	double	rayDirY;
+
+	int		mapX;
+	int		mapY;
+	double	sideDistX;
+	double	sideDistY;
+	double	deltaDistX;
+	double	deltaDistY;
+	double	perpWallDist;
+	int		stepX;
+	int		stepY;
+	int		hit;
+	int		side;
+}				t_rc_var;
 
 typedef struct	s_key 
 {
@@ -48,6 +82,8 @@ typedef struct	s_key
 
 	int	l_arr;
 	int	r_arr;
+
+	int	esc;
 }				t_key;
 
 
@@ -57,6 +93,10 @@ typedef struct	s_player
 	float	x;
 	float	y;
 	float	alpha;
+	float	dirX;
+	float	dirY;
+	float	planeX;
+	float	planeY;
 }				t_player;
 
 
@@ -118,8 +158,13 @@ char	**ft_strsjoin(char **s1, char *s2);
 void	ft_parse_main(char *path, t_game *game);
 void	ft_error(char *error_msg, t_game *game, void *data_to_free);
 void	ft_error_res(char **res, t_game *game, char *line);
-void	ft_map_error(t_game *game);
+void	ft_exit(t_game *game);
 void	ft_reset_map(t_game *game);
 void	ft_check_data(t_game *game);
+void	move_player(t_game *game);
+int		key_pressed(int keycode, t_game *game);
+int		key_released(int keycode, t_game *game);
+double	modulo(double x, double y);
+double	ft_dda(t_game *game, int x_win);
 
 #endif

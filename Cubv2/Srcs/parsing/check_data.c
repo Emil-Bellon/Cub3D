@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 16:44:44 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/07 17:46:08 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/11 13:41:33 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	fill_flood_map(t_game *game, int y, int x)
 {
 	if (y < 0 || x < 0 || y > (ft_strslen(game->data.map) - 1) || \
 		x > ((int)ft_strlen(game->data.map[y]) - 1))
-		ft_map_error(game);
+		ft_error("The player is not surrounded by walls", game, NULL);
 	if (ft_ischar("|.$", game->data.map[y][x]))
 		return ;
 	if (game->data.map[y][x] == '1')

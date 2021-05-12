@@ -1,19 +1,19 @@
-R 1920 1080
+R 1000 1000
 
-NO .path_to_the_north_texture
-WE ./path_to_the_west_texture
-EA ./path_to_the_east_texture
+NO ./Txtr/no_txtr
+WE ./Txtr/we_txtr
+EA ./Txtr/ea_txtr
 
-S    ./path_to_the_sprite_texture
-SO    ./path_to_the_south_texture
+S    ./Txtr/sprite_txtr
+SO    ./Txtr/so_txtr
 
-F 220,100,0
-C 225,30,0
+F 254,0,0
+C 0,0,254
 
 
         1111111111111111111111111
         1000000000110000000000001
-        10110000011100000000N0001
+        10110000011100000000W0001
         1001000000000000000000001
 111111111011000001110000000000001
 100000000011000001110111110111111

@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 13:40:24 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/07 13:12:47 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/11 13:49:49 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,12 @@ static int	ft_rgb_ok(char **rgb)
 		while (rgb[i][j])
 			if (!(ft_isdigit(rgb[i][j++])))
 				return (0);
+		if (j > 3)
+			return (0);
 		i++;
 	}
+	if (i != 3)
+		return (0);
 	return (1);
 }
 
@@ -74,10 +78,7 @@ void		ft_parse_rgb_f(char *line, t_game *game)
 		i++;
 	str = ft_substr(line, i, ft_strlen(line));
 	rgb = ft_split(str, ',');
-	i = 0;
-	while (rgb[i])
-		i++;
-	if (i != 3 || ft_rgb_ok(rgb) == 0)
+	if (ft_rgb_ok(rgb) == 0)
 	{
 		ft_free_strs(rgb);
 		ft_error("There is a problem with the F rgb", game, line);
@@ -99,16 +100,13 @@ void		ft_parse_rgb_c(char *line, t_game *game)
 		i++;
 	str = ft_substr(line, i, ft_strlen(line));
 	rgb = ft_split(str, ',');
-	i = 0;
-	while (rgb[i])
-		i++;
-	if (i != 3 || ft_rgb_ok(rgb) == 0)
+	if (ft_rgb_ok(rgb) == 0)
 	{
 		ft_free_strs(rgb);
 		ft_error("There is a problem with the C rgb", game, line);
 	}
-	game->data.rgb_c = (ft_atoi(rgb[0]) * (256 * 256))
-						+ (ft_atoi(rgb[1]) * 256) + ft_atoi(rgb[2]);
+	game->data.rgb_c = (ft_atoi(rgb[0]) << 16)
+						+ (ft_atoi(rgb[1]) << 8) + ft_atoi(rgb[2]);
 	free(str);
 	ft_free_strs(rgb);
 }

@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 11:36:39 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/07 17:47:29 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/12 16:25:19 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,46 @@ static int	ft_set_player(t_game *game, int x, int y, char alpha)
 		return (0);
 	game->player.x = x;
 	game->player.y = y;
-	if (alpha == 'W')
-		game->player.alpha = PI;
-	else if (alpha == 'E')
-		game->player.alpha = 0;
-	else if (alpha == 'N')
+	if (alpha == 'N')
+	{
 		game->player.alpha = (3 * PI) / 2;
+		game->player.dirX = 0;
+		game->player.dirY = -1;
+		game->player.planeX = 0.66;
+		game->player.planeY = 0;
+	}
 	else if (alpha == 'S')
+	{
 		game->player.alpha = PI / 2;
-	game->player.alive = 1;
+		game->player.dirX = 0;
+		game->player.dirY = 1;
+		game->player.planeX = -0.66;
+		game->player.planeY = 0;
+	}
+	else
+		ft_set_player2(game, x, y, alpha);
 	return (1);
+}
+
+static void	ft_set_player2(t_game *game, int x, int y, char alpha)
+{
+	if (alpha == 'W')
+	{
+		game->player.alpha = PI;
+		game->player.dirX = -1;
+		game->player.dirY = 0;
+		game->player.planeX = 0;
+		game->player.planeY = 0.66;
+	}
+	else if (alpha == 'E')
+	{
+		game->player.alpha = 0;
+		game->player.dirX = 0;
+		game->player.dirY = -1;
+		game->player.planeX = 0.66;
+		game->player.planeY = 0;
+	}
+	game->player.alive = 1;
 }
 
 static void	ft_add_map_line(char *line, t_game *game)
@@ -110,7 +140,7 @@ void		ft_parse_main(char *path, t_game *game)
 	if (fd < 0)
 		ft_error("There was a problem while opening [arg_path] file", game, NULL);
 	ret_read = get_next_line(fd, &line);
-	while (ret_read == 1 && game->stop == 0)
+	while (ret_read == 1)
 	{
 		if (line[0] >= 'A' && line[0] <= 'Z')
 			ft_parse_line_data(line, game);

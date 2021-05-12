@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 15:10:54 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/07 17:27:37 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/11 15:27:17 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void		ft_reset_map(t_game *game)
 			if (game->data.map[y][x] == '|')
 				game->data.map[y][x] = '1';
 			if (game->data.map[y][x] == '.')
-				game->data.map[y][x] = '0';
+				game->data.map[y][x] = ' ';
 			if (game->data.map[y][x] == '$')
 				game->data.map[y][x] = '2';
 			x++;
