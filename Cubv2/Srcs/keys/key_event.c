@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 14:07:47 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/11 15:29:49 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/14 16:10:41 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,13 @@ int		key_pressed(int keycode, t_game *game)
 		game->data.key.r_arr = 1;
 	if (keycode == ESC)
 		game->data.key.esc = 1;
+	if (keycode == T)
+	{
+		if (game->trip == 0)
+			game->trip = 2;
+		else
+			game->trip = 0;
+	}
 	return (0);
 }
 

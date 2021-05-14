@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 15:13:09 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/12 16:04:32 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/14 16:18:29 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define A 0
 # define S 1
 # define D 2
+# define T 17
 # define L_ARR 123
 # define R_ARR 124
 # define ESC 53
@@ -45,6 +46,7 @@ typedef struct	s_size_wall
 {
 	int	start;
 	int	stop;
+	int	height;
 }				t_size_wall;
 
 typedef struct	s_rc_var
@@ -86,17 +88,46 @@ typedef struct	s_key
 	int	esc;
 }				t_key;
 
+typedef struct	s_xpm
+{
+	void	*img;
+	int		*addr;
+	int		w;
+	int		h;
+	int		endian;
+	int		bytes;
+	int		sizeline;
+}				t_xpm;
+
+typedef struct	s_txtr
+{
+	t_xpm		*texture;
+	int			texWidth;
+	int			texHeight;
+	int			texNum;
+	double		wallX;
+	int			texX;
+	int			texY;
+	double		step;
+	double		texPos;
+
+	t_rc_var	var;
+}				t_txtr;
 
 typedef struct	s_player
 {
 	int		alive;
+	
 	float	x;
 	float	y;
+	
 	float	alpha;
 	float	dirX;
 	float	dirY;
+	
 	float	planeX;
 	float	planeY;
+	int		side;
 }				t_player;
 
 
@@ -110,8 +141,6 @@ typedef struct	s_mlx
 	int		line_length;
 	int		endian;
 }				t_mlx;
-
-
 
 typedef struct	s_data
 {
@@ -138,9 +167,12 @@ typedef struct	s_game
 {
 	t_data		data;
 	t_player	player;
-	t_mlx		mlx;
+	t_mlx		*mlx;
+	t_txtr		*txtr;
 
-	int			stop;
+	float		trip;
+	int		flip;
+	int			trip_color;
 }				t_game;
 
 void	ft_parse_no_txtr(char *line, t_game *game);
@@ -165,6 +197,8 @@ void	move_player(t_game *game);
 int		key_pressed(int keycode, t_game *game);
 int		key_released(int keycode, t_game *game);
 double	modulo(double x, double y);
-double	ft_dda(t_game *game, int x_win);
+double	ft_dda(t_game *game, int x_win, t_rc_var *var);
+void	draw_wall(t_game *game, t_size_wall size_wall, t_txtr *txtr, int x);
+void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
 
 #endif

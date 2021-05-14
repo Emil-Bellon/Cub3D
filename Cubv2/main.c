@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 14:16:46 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/12 16:50:55 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/14 16:24:31 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	ft_printf_player(t_player player)
 
 void	ft_init_game(t_game *game)
 {
-	game->stop = 0;
 	game->player.alive = 0;
 	game->player.x = 0;
 	game->player.y = 0;
@@ -82,8 +81,8 @@ void	clean_window(t_game *game)
 	while (++y < game->data.ry)
 	{
 		x = -1;
-		while (++x < game->data.ry)
-			my_mlx_pixel_put(&(game->mlx), x, y, color);
+		while (++x < game->data.rx)
+			my_mlx_pixel_put(game->mlx, x, y, color);
 	}
 }
 
@@ -93,19 +92,27 @@ void	draw_col(t_col col, t_game *game)
 
 	size = col.start;
 	while (size < col.size_max)
-		my_mlx_pixel_put(&(game->mlx), col.x, size++, col.color);
+	{
+		if (game->trip > 0)
+		{
+			if (size % (int)game->trip == 0)
+				my_mlx_pixel_put(game->mlx, col.x, size, col.color);
+		}
+		else
+				my_mlx_pixel_put(game->mlx, col.x, size, col.color);
+		size++;
+	}
 }
 
 t_size_wall	ft_get_wall_size(int x_win, t_game *game)
 {
 	t_size_wall	size_wall;
-	int			height;
 
-	height = (int)(game->data.ry / ft_dda(game, x_win));
-	size_wall.start = game->data.ry / 2 - height / 2;
+	size_wall.height = (int)(game->data.ry / ft_dda(game, x_win, &(game->txtr->var)));
+	size_wall.start = game->data.ry / 2 - size_wall.height / 2;
 	if (size_wall.start < 0)
 		size_wall.start = 0;
-	size_wall.stop = game->data.ry / 2 + height / 2;
+	size_wall.stop = game->data.ry / 2 + size_wall.height / 2;
 	if (size_wall.stop >= game->data.ry)
 		size_wall.stop = game->data.ry;
 	return (size_wall);
@@ -121,12 +128,26 @@ void	draw_screen(t_game *game)
 	while (x_win < game->data.rx)
 	{
 		size_wall = ft_get_wall_size(x_win, game);
-		col = (t_col){x_win, 0, size_wall.start, game->data.rgb_c};
-		draw_col(col, game);
-		col = (t_col){x_win, size_wall.start, size_wall.stop, 0x00000000};
-		draw_col(col, game);
-		col = (t_col){x_win, size_wall.stop, game->data.ry, game->data.rgb_f};
-		draw_col(col, game);
+		if (game->trip == 0)
+		{
+			col = (t_col){x_win, 0, size_wall.start, game->data.rgb_c};
+			draw_col(col, game);
+			draw_wall(game, size_wall, game->txtr, x_win);
+			col = (t_col){x_win, size_wall.stop, game->data.ry, game->data.rgb_f};
+			draw_col(col, game);
+		}
+		else
+		{
+			if (x_win % (int)game->trip == 0)
+			{
+				col = (t_col){x_win, size_wall.start, size_wall.stop, game->trip_color};
+				draw_col(col, game);
+			}
+			col = (t_col){x_win, 0, size_wall.start, 0x00000000};
+			draw_col(col, game);
+			col = (t_col){x_win, size_wall.stop, game->data.ry, 0x00000000};
+			draw_col(col, game);
+		}
 		x_win++;
 	}
 }
@@ -146,37 +167,63 @@ int		ft_game(t_game *game)
 	while (y_map < game->data.map_y)
 		printf("%-*s\n", game->data.map_x, game->data.map[y_map++]);
 
-	mlx_put_image_to_window(game->mlx.mlx_ptr, game->mlx.mlx_win, game->mlx.img, 0, 0);
-	mlx_do_sync(game->mlx.mlx_ptr);
+	mlx_put_image_to_window(game->mlx->mlx_ptr, game->mlx->mlx_win, game->mlx->img, 0, 0);
+	mlx_do_sync(game->mlx->mlx_ptr);
+	if (game->trip > 0)
+	{
+		if (game->flip == 0)
+		{
+			game->trip += 0.5;
+			if (game->trip > 7)
+				game->flip = 1;
+		}
+		else
+		{
+			game->trip -= 0.5;
+			if (game->trip < 2.5)
+				game->flip = 0;
+		}
+		// game->trip_color *= 5;
+		if (game->trip_color > 0x01000000)
+			game->trip_color = 0x00000001;
+	}
 	return (0);
 }
 
 int		main(int ac, char **av)
 {
-	t_game	game;
+	t_game	*game;
+	t_mlx	mlx;
 	
-	ft_init_game(&game);
+	game = ft_calloc(sizeof(t_game), 1);
+	if (!game)
+		exit(EXIT_SUCCESS);
+	ft_init_game(game);
 	if (ac != 2)
-		ft_error("Cub3D need exactly 1 argument", &game, NULL);
-	ft_parse_main(av[1], &game);
-	ft_check_data(&game);
+		ft_error("Cub3D need exactly 1 argument", game, NULL);
+	ft_parse_main(av[1], game);
+	game->trip = 0;
+	game->flip = 0;
+	game->trip_color = 0x000000FF;
+	game->mlx = &mlx;
+	game->mlx->mlx_ptr = mlx_init();
+	game->mlx->mlx_win = mlx_new_window(game->mlx->mlx_ptr, game->data.rx, game->data.ry, "Cub3D !");
+	game->mlx->img = mlx_new_image(game->mlx->mlx_ptr, game->data.rx, game->data.ry);
+	game->mlx->addr = mlx_get_data_addr(game->mlx->img, &game->mlx->bits_per_pixel, &game->mlx->line_length,
+								&game->mlx->endian);
 
-	game.mlx.mlx_ptr = mlx_init();
-	game.mlx.mlx_win = mlx_new_window(game.mlx.mlx_ptr, game.data.rx, game.data.ry, "Cub3D !");
-	game.mlx.img = mlx_new_image(game.mlx.mlx_ptr, game.data.rx, game.data.ry);
-	game.mlx.addr = mlx_get_data_addr(game.mlx.img, &game.mlx.bits_per_pixel, &game.mlx.line_length,
-								&game.mlx.endian);
+	ft_check_data(game);
+	mlx_put_image_to_window(game->mlx->mlx_ptr, game->mlx->mlx_win, game->mlx->img, 0, 0);
+	mlx_hook(game->mlx->mlx_win, 02, 1L << 0, key_pressed, game);
+	mlx_hook(game->mlx->mlx_win, 03, 1L << 1, key_released, game);
+	mlx_loop_hook(game->mlx->mlx_ptr, ft_game, game);
+	mlx_loop(game->mlx->mlx_ptr);
 
-	mlx_put_image_to_window(game.mlx.mlx_ptr, game.mlx.mlx_win, game.mlx.img, 0, 0);
-	mlx_hook(game.mlx.mlx_win, 02, 1L << 0, key_pressed, &game);
-	mlx_hook(game.mlx.mlx_win, 03, 1L << 1, key_released, &game);
-	mlx_loop_hook(game.mlx.mlx_ptr, ft_game, &game);
-	mlx_loop(game.mlx.mlx_ptr);
-
-	free(game.data.no);
-	free(game.data.so);
-	free(game.data.we);
-	free(game.data.ea);
-	free(game.data.sprite);
-	ft_free_strs(game.data.map);
+	free(game->data.no);
+	free(game->data.so);
+	free(game->data.we);
+	free(game->data.ea);
+	free(game->data.sprite);
+	ft_free_strs(game->data.map);
+	return (0);
 }

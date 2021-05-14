@@ -1,11 +1,11 @@
-R 2100 1500
+R 1920 1080
 
-NO ./Txtr/no_txtr
-WE ./Txtr/we_txtr
-EA ./Txtr/ea_txtr
+NO ./Txtr/txtr.xpm
+WE ./Txtr/we_txtr.xpm
+EA ./Txtr/we_txtr.xpm
 
-S    ./Txtr/sprite_txtr
-SO    ./Txtr/so_txtr
+S    ./Txtr/txtr.xpm
+SO    ./Txtr/txtr.xpm
 
 F 254,0,0
 C 0,0,254

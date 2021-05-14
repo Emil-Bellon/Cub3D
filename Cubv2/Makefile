@@ -6,7 +6,7 @@
 #    By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/23 12:34:52 by ebellon           #+#    #+#              #
-#    Updated: 2021/05/12 13:00:57 by ebellon          ###   ########lyon.fr    #
+#    Updated: 2021/05/13 16:17:37 by ebellon          ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ FILES			=	error_management/ft_error.c \
 					parsing/parse_tool.c \
 					parsing/check_data.c \
 					game_actions/player_move.c \
-					display/ray_cast.c
+					display/ray_cast.c \
+					display/draw_txtr.c
 
 INC_FILES		= cub3d.h
 INC_PATH		= ./Headers/

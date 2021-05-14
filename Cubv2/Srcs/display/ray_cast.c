@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 12:24:22 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/12 16:49:03 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/13 11:51:57 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,36 +70,35 @@ static void		init_rc_var(t_rc_var *var, t_game *game, int x)
 	init_rc_var2(var);
 }
 
-static double	ft_dist(t_rc_var v)
+static double	ft_dist(t_rc_var *v)
 {
-	if (v.side == 0)
-		v.perpWallDist = (v.mapX - v.posX + (1 - v.stepX) / 2) / v.rayDirX;
+	if (v->side == 0)
+		v->perpWallDist = (v->mapX - v->posX + (1 - v->stepX) / 2) / v->rayDirX;
 	else
-		v.perpWallDist = (v.mapY - v.posY + (1 - v.stepY) / 2) / v.rayDirY;
-	return (v.perpWallDist);
+		v->perpWallDist = (v->mapY - v->posY + (1 - v->stepY) / 2) / v->rayDirY;
+	return (v->perpWallDist);
 }
 
-double			ft_dda(t_game *game, int x_win)
+double			ft_dda(t_game *game, int x_win, t_rc_var *var)
 {
-	t_rc_var	var;
-
-	init_rc_var(&var, game, x_win);
-	while (var.hit == 0)
+	init_rc_var(var, game, x_win);
+	while (var->hit == 0)
 	{
-		if (var.sideDistX < var.sideDistY)
+		if (var->sideDistX < var->sideDistY)
 		{
-			var.sideDistX += var.deltaDistX;
-			var.mapX += var.stepX;
-			var.side = 0;
+			var->sideDistX += var->deltaDistX;
+			var->mapX += var->stepX;
+			var->side = 0;
 		}
 		else
 		{
-			var.sideDistY += var.deltaDistY;
-			var.mapY += var.stepY;
-			var.side = 1;
+			var->sideDistY += var->deltaDistY;
+			var->mapY += var->stepY;
+			var->side = 1;
 		}
-		if (game->data.map[var.mapY][var.mapX] != ' ')
-			var.hit = 1;
+		if (game->data.map[var->mapY][var->mapX] == '1')
+			var->hit = 1;
 	}
+	game->player.side = var->side;
 	return (ft_dist(var));
 }
