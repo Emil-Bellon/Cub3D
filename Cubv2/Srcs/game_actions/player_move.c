@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 14:11:21 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/12 16:47:04 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/20 14:35:06 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void		move_player3(t_game *game)
 {
 	double oldDirX;
 	double oldPlaneX;
-	if (game->data.key.l_arr)
+	if (game->data.key.r_arr)
 	{
 		game->player.alpha = modulo((game->player.alpha + ROTATE), (2 * PI));
 		oldDirX = game->player.dirX;
@@ -35,7 +35,7 @@ static void		move_player3(t_game *game)
 		game->player.planeX = game->player.planeX * cos(ROTATE) - game->player.planeY * sin(ROTATE);
 		game->player.planeY = oldPlaneX * sin(ROTATE) + game->player.planeY * cos(ROTATE);
 	}
-	if (game->data.key.r_arr)
+	if (game->data.key.l_arr)
 	{
 		game->player.alpha = modulo((game->player.alpha - ROTATE), (2 * PI));
 		oldDirX = game->player.dirX;
@@ -50,14 +50,14 @@ static void		move_player3(t_game *game)
 
 static void		move_player2(t_game *game)
 {
-	if (game->data.key.d)
+	if (game->data.key.a)
 	{
 		if (game->data.map[(int)(game->player.y - ((sin(game->player.alpha + (PI/2))) * SPEED))][(int)game->player.x] == ' ')
 			game->player.y -= ((sin(game->player.alpha + (PI/2))) * SPEED);
 		if (game->data.map[(int)game->player.y][(int)(game->player.x - ((cos(game->player.alpha + (PI/2))) * SPEED))] == ' ')
 			game->player.x -= ((cos(game->player.alpha + (PI/2))) * SPEED);
 	}
-	if (game->data.key.a)
+	if (game->data.key.d)
 	{
 		if (game->data.map[(int)(game->player.y + ((sin(game->player.alpha + (PI/2))) * SPEED))][(int)game->player.x] == ' ')
 			game->player.y += ((sin(game->player.alpha + (PI/2))) * SPEED);

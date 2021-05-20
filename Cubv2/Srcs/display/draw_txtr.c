@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/13 11:27:55 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/14 13:55:29 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/20 20:24:14 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,20 @@ void	draw_wall(t_game *game, t_size_wall size_wall, t_txtr *txtr, int x)
 
 	if (game->data.map[txtr->var.mapY][txtr->var.mapX] == '1')
 	{
-		if (txtr->var.side == 0 && sin(game->player.alpha) < 0)
-			txtr->texNum = 0;
-		if (txtr->var.side == 0 && sin(game->player.alpha) > 0)
-			txtr->texNum = 1;
-		if (txtr->var.side == 1 && cos(game->player.alpha) < 0)
-			txtr->texNum = 2;
-		if (txtr->var.side == 1 && cos(game->player.alpha) > 0)
-			txtr->texNum = 3;
+		if (txtr->var.side == 0)
+		{
+			if (game->player.x > txtr->var.mapX)
+				txtr->texNum = 3;
+			else
+				txtr->texNum = 2;
+		}
+		else
+		{
+			if (game->player.y > txtr->var.mapY)
+				txtr->texNum = 1;
+			else
+				txtr->texNum = 0;
+		}
 	}
 	
 	//calculate value of wallX

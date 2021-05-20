@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 11:36:39 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/12 16:39:11 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/20 15:26:20 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,19 @@ static void	ft_set_player2(t_game *game, char alpha)
 {
 	if (alpha == 'W')
 	{
-		game->player.alpha = PI;
+		game->player.alpha = -PI;
 		game->player.dirX = -1;
 		game->player.dirY = 0;
 		game->player.planeX = 0;
-		game->player.planeY = 0.66;
+		game->player.planeY = -0.66;
 	}
 	else if (alpha == 'E')
 	{
 		game->player.alpha = 0;
-		game->player.dirX = 0;
-		game->player.dirY = -1;
-		game->player.planeX = 0.66;
-		game->player.planeY = 0;
+		game->player.dirX = 1;
+		game->player.dirY = 0;
+		game->player.planeX = 0;
+		game->player.planeY = 0.66;
 	}
 	game->player.alive = 1;
 }
@@ -58,8 +58,8 @@ static int	ft_set_player(t_game *game, int x, int y, char alpha)
 {
 	if (game->player.alive == 1)
 		return (0);
-	game->player.x = x;
-	game->player.y = y;
+	game->player.x = x + 0.5;
+	game->player.y = y + 0.5;
 	if (alpha == 'N')
 	{
 		game->player.alpha = (3 * PI) / 2;
@@ -67,6 +67,7 @@ static int	ft_set_player(t_game *game, int x, int y, char alpha)
 		game->player.dirY = -1;
 		game->player.planeX = 0.66;
 		game->player.planeY = 0;
+		game->player.alive = 1;
 	}
 	else if (alpha == 'S')
 	{
@@ -75,6 +76,7 @@ static int	ft_set_player(t_game *game, int x, int y, char alpha)
 		game->player.dirY = 1;
 		game->player.planeX = -0.66;
 		game->player.planeY = 0;
+		game->player.alive = 1;
 	}
 	else
 		ft_set_player2(game, alpha);
