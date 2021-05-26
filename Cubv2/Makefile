@@ -6,7 +6,7 @@
 #    By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/23 12:34:52 by ebellon           #+#    #+#              #
-#    Updated: 2021/05/13 16:17:37 by ebellon          ###   ########lyon.fr    #
+#    Updated: 2021/05/25 20:03:53 by ebellon          ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ FILES			=	error_management/ft_error.c \
 					parsing/check_data.c \
 					game_actions/player_move.c \
 					display/ray_cast.c \
-					display/draw_txtr.c
+					display/draw_txtr.c \
+					display/draw_sprite.c
 
 INC_FILES		= cub3d.h
 INC_PATH		= ./Headers/
@@ -30,7 +31,7 @@ SRC				= $(addprefix ${SRC_PATH}, ${FILES})
 
 CC				= gcc
 OBJS			= ${SRC:.c=.o}
-FLAGS			= -Wall -Wextra -Werror -O3
+FLAGS			= -Wall -Wextra -Werror -g3
 
 #LIBRARY
 NAME_LIBFT		= libft.a
@@ -42,17 +43,20 @@ MINILIBX		= $(addprefix ${MINILIBX_PATH}, ${NAME_MINILIBX})
 
 all:			${NAME}
 
+# linking
+${NAME}:		lib ${OBJS}
+				${CC} ${OBJS} main.c -o ${NAME} ${NAME_LIBFT} ${NAME_MINILIBX} -I ${INC_PATH} $(FLAGS)
+
+%.o: %.c		${INC}
+				${CC} -c $< -o $@ -I ${INC_PATH} ${FLAGS}
+
+# source compilation
 lib:
 				make -C ${LIBFT_PATH}
 				make -C ${MINILIBX_PATH}
 				cp ${LIBFT} .
 				cp ${MINILIBX} .
 
-%.o: %.c		${INC}
-				${CC} ${FLAGS} -c $< -o $@ -I ${INC_PATH}
-
-${NAME}:		lib ${OBJS}
-				${CC} ${OBJS} main.c -o ${NAME} ${NAME_LIBFT} ${NAME_MINILIBX} -I ${INC_PATH}
 
 clean:
 				make -C ${LIBFT_PATH} clean

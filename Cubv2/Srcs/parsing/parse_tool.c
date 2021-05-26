@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 15:10:54 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/12 16:58:33 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/26 14:37:18 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_is_char_map(char c)
 {
-	if (c == ' ' || c == '0' || c == '1' || c == '2')
+	if (c == ' ' || c == '0' || c == '1' || c == '2' || c == '3' || c == '4')
 		return (1);
 	else if (c == 'N'|| c == 'S' || c == 'E' || c == 'W')
 		return (2);
@@ -83,6 +83,8 @@ void		ft_reset_map(t_game *game)
 				game->data.map[y][x] = ' ';
 			if (game->data.map[y][x] == '$')
 				game->data.map[y][x] = '2';
+			if (game->data.map[y][x] == '*')
+				game->data.map[y][x] = '3';
 			x++;
 		}
 		y++;

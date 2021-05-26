@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 11:36:39 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/20 15:26:20 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/26 13:18:32 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,22 @@
 
 static void	ft_parse_line_data(char *line, t_game *game)
 {
-	if (ft_strncmp(line, "R ", 2) == 0)
-		ft_parse_res(line, game);
 	if (ft_strncmp(line, "NO ", 3) == 0)
 		ft_parse_no_txtr(line, game);
-	if (ft_strncmp(line, "SO ", 3) == 0)
+	else if (ft_strncmp(line, "SO ", 3) == 0)
 		ft_parse_so_txtr(line, game);
-	if (ft_strncmp(line, "EA ", 3) == 0)
+	else if (ft_strncmp(line, "EA ", 3) == 0)
 		ft_parse_ea_txtr(line, game);
-	if (ft_strncmp(line, "WE ", 3) == 0)
+	else if (ft_strncmp(line, "WE ", 3) == 0)
 		ft_parse_we_txtr(line, game);
-	if (ft_strncmp(line, "S ", 2) == 0)
-		ft_parse_s_txtr(line, game);
-	if (ft_strncmp(line, "F ", 2) == 0)
+	// if (ft_strncmp(line, "S ", 2) == 0)
+	// 	ft_parse_s_txtr(line, game);
+	else if (ft_strncmp(line, "F ", 2) == 0)
 		ft_parse_rgb_f(line, game);
-	if (ft_strncmp(line, "C ", 2) == 0)
+	else if (ft_strncmp(line, "C ", 2) == 0)
 		ft_parse_rgb_c(line, game);
+	else
+		ft_error("There is a wrong line in the .cub file", game, line);
 	free(line);
 }
 

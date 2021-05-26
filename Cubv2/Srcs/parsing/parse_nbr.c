@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 13:40:24 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/11 13:49:49 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/26 13:18:41 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,30 +41,6 @@ void	ft_free_strs(char **tab)
 	while (tab[i])
 		free(tab[i++]);
 	free(tab);
-}
-
-void		ft_parse_res(char *line, t_game *game)
-{
-	char	**res;
-	int		i;
-
-	res = ft_split(line, ' ');
-	i = 0;
-	while (res[i])
-		i++;
-	if (i != 3)
-		ft_error_res(res, game, line);
-	i = 0;
-	while (res[1][i])
-		if (!(ft_isdigit(res[1][i++])))
-			ft_error_res(res, game, line);
-	i = 0;
-	while (res[2][i])
-		if (!(ft_isdigit(res[2][i++])))
-			ft_error_res(res, game, line);
-	game->data.rx = ft_atoi(res[1]);
-	game->data.ry = ft_atoi(res[2]);
-	ft_free_strs(res);
 }
 
 void		ft_parse_rgb_f(char *line, t_game *game)

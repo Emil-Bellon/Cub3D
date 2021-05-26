@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/13 11:27:55 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/20 20:24:14 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/26 14:59:37 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	draw_wall(t_game *game, t_size_wall size_wall, t_txtr *txtr, int x)
 	int	y;
 	int	color;
 
-	if (game->data.map[txtr->var.mapY][txtr->var.mapX] == '1')
+	if (game->data.map[txtr->var.mapY][txtr->var.mapX] == '1'|| (game->data.map[txtr->var.mapY][txtr->var.mapX] == '4' && game->trip == 0))
 	{
 		if (txtr->var.side == 0)
 		{

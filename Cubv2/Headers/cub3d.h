@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 15:13:09 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/14 16:18:29 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/26 13:57:19 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,11 @@
 # define L_ARR 123
 # define R_ARR 124
 # define ESC 53
-# define SPEED 0.33
-# define ROTATE 0.157
+# define SPEED 0.15
+# define ROTATE 0.07535
 # define SIZE 50
+# define WINX 1200
+# define WINY 900
 
 typedef struct	s_col
 {
@@ -48,6 +50,33 @@ typedef struct	s_size_wall
 	int	stop;
 	int	height;
 }				t_size_wall;
+
+typedef struct	s_lst_sprite
+{
+	float					x;
+	float					y;
+	int						id;
+	struct	s_lst_sprite	*next;
+}				t_lst_sprite;
+
+typedef struct	s_spr_var
+{
+	double	spriteX;
+	double	spriteY;
+	double	invDet;
+	double	transformX;
+	double	transformY;
+	int		spriteScreenX;
+	int		spriteHeight;
+	int		drawStartY;
+	int		drawEndY;
+	int		spriteWidth;
+	int		drawStartX;
+	int		drawEndX;
+	int		texX;
+	int		texY;
+	int		d;
+}				t_spr_var;
 
 typedef struct	s_rc_var
 {
@@ -165,14 +194,17 @@ typedef struct	s_data
 
 typedef struct	s_game
 {
-	t_data		data;
-	t_player	player;
-	t_mlx		*mlx;
-	t_txtr		*txtr;
+	t_data			data;
+	t_player		player;
+	t_mlx			*mlx;
+	t_txtr			*txtr;
+	t_lst_sprite	*lst_sprite;
+	t_spr_var		spr_var;
+	float			zbuffer[2000];
 
-	float		trip;
-	int		flip;
-	int			trip_color;
+	float			trip;
+	int				flip;
+	int				trip_color;
 }				t_game;
 
 void	ft_parse_no_txtr(char *line, t_game *game);
@@ -200,5 +232,10 @@ double	modulo(double x, double y);
 double	ft_dda(t_game *game, int x_win, t_rc_var *var);
 void	draw_wall(t_game *game, t_size_wall size_wall, t_txtr *txtr, int x);
 void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
+void	ft_lstadd_frt(t_lst_sprite **lst, t_lst_sprite *new);
+void	ft_draw_sprite(t_game *game, t_rc_var *var, t_txtr *txtr);
+t_lst_sprite	*ft_lst_new(float x, float y, int id);
+void	ft_clear_lst(t_lst_sprite **lst);
+int		ft_in_lst(t_lst_sprite *lst, float x, float y);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 14:16:46 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/20 19:11:54 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/26 16:00:40 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	ft_init_game(t_game *game)
 	game->data.we = NULL;
 	game->data.sprite = NULL;
 	game->data.map = NULL;
-	game->data.key = (t_key){0, 0, 0, 0, 0, 0};
+	game->data.key = (t_key){0, 0, 0, 0, 0, 0, 0};
 }
 
 void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color)
@@ -151,6 +151,8 @@ t_size_wall	ft_get_wall_size(int x_win, t_game *game)
 	t_size_wall	size_wall;
 
 	size_wall.height = (int)(game->data.ry / ft_dda(game, x_win, &(game->txtr->var)));
+	if (game->trip > 0)
+		size_wall.height = (size_wall.height * game->trip / 5) + 10 * cos((x_win / 10) * game->trip);
 	size_wall.start = game->data.ry / 2 - size_wall.height / 2;
 	if (size_wall.start < 0)
 		size_wall.start = 0;
@@ -185,6 +187,19 @@ void	draw_trip(int x_win, t_game *game, t_size_wall size_wall)
 	draw_col(col, game);
 }
 
+int	ft_lst_size(t_lst_sprite *lst)
+{
+	int	size;
+
+	size = 0;
+	while (lst)
+	{
+		size++;
+		lst = lst->next;
+	}
+	return (size);
+}
+
 void	draw_screen(t_game *game)
 {
 	int			x_win;
@@ -207,20 +222,23 @@ void	draw_screen(t_game *game)
 			draw_trip(x_win, game, size_wall);
 		x_win++;
 	}
+	// printf("lst size = %d\n", ft_lst_size(game->lst_sprite));
+	ft_draw_sprite(game, &game->txtr->var, game->txtr);
+	ft_clear_lst(&game->lst_sprite);
 }
 
 void	ft_trip(t_game *game)
 {
 	if (game->flip == 0)
 	{
-		game->trip += 0.15;
+		game->trip += 0.3;
 		if (game->trip > 10)
 			game->flip = 1;
 	}
 	else
 	{
-		game->trip -= 0.15;
-		if (game->trip < 4.15)
+		game->trip -= 0.3;
+		if (game->trip < 5.3)
 			game->flip = 0;
 	}
 	game->trip_color = game->trip_color * (256/2);
@@ -247,15 +265,18 @@ int		ft_game(t_game *game)
 	mlx_do_sync(game->mlx->mlx_ptr);
 	if (game->trip > 0)
 		ft_trip(game);
+	// exit(1);
 	return (0);
 }
 
 int		main(int ac, char **av)
 {
-	t_game	*game;
-	t_mlx	mlx;
+	t_game			*game;
+	t_mlx			mlx;
 	
 	game = ft_calloc(sizeof(t_game), 1);
+	game->data.rx = WINX;
+	game->data.ry = WINY;
 	if (!game)
 		exit(EXIT_SUCCESS);
 	ft_init_game(game);
@@ -271,7 +292,7 @@ int		main(int ac, char **av)
 	game->mlx->img = mlx_new_image(game->mlx->mlx_ptr, game->data.rx, game->data.ry);
 	game->mlx->addr = mlx_get_data_addr(game->mlx->img, &game->mlx->bits_per_pixel, &game->mlx->line_length,
 								&game->mlx->endian);
-
+	game->lst_sprite = NULL;
 	ft_check_data(game);
 	mlx_put_image_to_window(game->mlx->mlx_ptr, game->mlx->mlx_win, game->mlx->img, 0, 0);
 	mlx_hook(game->mlx->mlx_win, 02, 1L << 0, key_pressed, game);

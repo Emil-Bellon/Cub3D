@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 14:11:21 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/20 14:35:06 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/26 16:12:38 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,23 +45,30 @@ static void		move_player3(t_game *game)
 		game->player.planeX = game->player.planeX * cos(-ROTATE) - game->player.planeY * sin(-ROTATE);
 		game->player.planeY = oldPlaneX * sin(-ROTATE) + game->player.planeY * cos(-ROTATE);
 	}
-	game->data.map[(int)game->player.y][(int)game->player.x] = '*';
+	if (game->data.map[(int)game->player.y][(int)game->player.x] != '2' &&
+		game->data.map[(int)game->player.y][(int)game->player.x] != '3' &&
+		game->data.map[(int)game->player.y][(int)game->player.x] != '4')
+		game->data.map[(int)game->player.y][(int)game->player.x] = '*';
 }
 
 static void		move_player2(t_game *game)
 {
 	if (game->data.key.a)
 	{
-		if (game->data.map[(int)(game->player.y - ((sin(game->player.alpha + (PI/2))) * SPEED))][(int)game->player.x] == ' ')
+		if (game->data.map[(int)floor(game->player.y - ((sin(game->player.alpha + (PI/2))) * SPEED))][(int)floor(game->player.x)] != '1' &&
+			!(game->data.map[(int)floor(game->player.y - ((sin(game->player.alpha + (PI/2))) * SPEED))][(int)floor(game->player.x)] == '4' && game->trip == 0))
 			game->player.y -= ((sin(game->player.alpha + (PI/2))) * SPEED);
-		if (game->data.map[(int)game->player.y][(int)(game->player.x - ((cos(game->player.alpha + (PI/2))) * SPEED))] == ' ')
+		if (game->data.map[(int)floor(game->player.y)][(int)floor(game->player.x - ((cos(game->player.alpha + (PI/2))) * SPEED))] != '1' &&
+			!(game->data.map[(int)floor(game->player.y)][(int)floor(game->player.x - ((cos(game->player.alpha + (PI/2))) * SPEED))] == '4' && game->trip == 0))
 			game->player.x -= ((cos(game->player.alpha + (PI/2))) * SPEED);
 	}
 	if (game->data.key.d)
 	{
-		if (game->data.map[(int)(game->player.y + ((sin(game->player.alpha + (PI/2))) * SPEED))][(int)game->player.x] == ' ')
+		if (game->data.map[(int)floor(game->player.y + ((sin(game->player.alpha + (PI/2))) * SPEED))][(int)floor(game->player.x)] != '1' &&
+			!(game->data.map[(int)floor(game->player.y + ((sin(game->player.alpha + (PI/2))) * SPEED))][(int)floor(game->player.x)] == '4' && game->trip == 0))
 			game->player.y += ((sin(game->player.alpha + (PI/2))) * SPEED);
-		if (game->data.map[(int)game->player.y][(int)(game->player.x + ((cos(game->player.alpha + (PI/2))) * SPEED))] == ' ')
+		if (game->data.map[(int)floor(game->player.y)][(int)floor(game->player.x + ((cos(game->player.alpha + (PI/2))) * SPEED))] != '1' &&
+			!(game->data.map[(int)floor(game->player.y)][(int)floor(game->player.x + ((cos(game->player.alpha + (PI/2))) * SPEED))] == '4' && game->trip == 0))
 			game->player.x += ((cos(game->player.alpha + (PI/2))) * SPEED);
 	}
 	move_player3(game);
@@ -69,20 +76,30 @@ static void		move_player2(t_game *game)
 
 void			move_player(t_game *game)
 {
-	if (game->data.map[(int)game->player.y][(int)game->player.x] != '1')
+	if (game->data.map[(int)game->player.y][(int)game->player.x] == '2' && game->trip == 0)
+		game->trip = 5;
+	else if (game->data.map[(int)game->player.y][(int)game->player.x] == '3')
+		game->trip = 0;
+	else if (game->data.map[(int)game->player.y][(int)game->player.x] != '1' &&
+		game->data.map[(int)game->player.y][(int)game->player.x] != '4' &&
+		game->data.map[(int)game->player.y][(int)game->player.x] != '2')
 		game->data.map[(int)game->player.y][(int)game->player.x] = ' ';
 	if (game->data.key.w)
 	{
-		if (game->data.map[(int)(game->player.y + ((sin(game->player.alpha)) * SPEED))][(int)game->player.x] == ' ')
+		if (game->data.map[(int)floor(game->player.y + ((sin(game->player.alpha)) * SPEED))][(int)floor(game->player.x)] != '1' &&
+			!(game->data.map[(int)floor(game->player.y + ((sin(game->player.alpha)) * SPEED))][(int)floor(game->player.x)] == '4' && game->trip == 0))
 			game->player.y += ((sin(game->player.alpha)) * SPEED);
-		if (game->data.map[(int)game->player.y][(int)(game->player.x + (cos(game->player.alpha)) * SPEED)] == ' ')
+		if (game->data.map[(int)floor(game->player.y)][(int)floor(game->player.x + (cos(game->player.alpha)) * SPEED)] != '1' &&
+			!(game->data.map[(int)floor(game->player.y)][(int)floor(game->player.x + (cos(game->player.alpha)) * SPEED)] == '4' && game->trip == 0))
 			game->player.x += ((cos(game->player.alpha)) * SPEED);
 	}
 	if (game->data.key.s)
 	{
-		if (game->data.map[(int)(game->player.y - ((sin(game->player.alpha)) * SPEED))][(int)game->player.x] == ' ')
+		if (game->data.map[(int)floor(game->player.y - ((sin(game->player.alpha)) * SPEED))][(int)floor(game->player.x)] != '1' &&
+			!(game->data.map[(int)floor(game->player.y - ((sin(game->player.alpha)) * SPEED))][(int)floor(game->player.x)] == '4' && game->trip == 0))
 			game->player.y -= ((sin(game->player.alpha)) * SPEED);
-		if (game->data.map[(int)game->player.y][(int)(game->player.x - ((cos(game->player.alpha)) * SPEED))] == ' ')
+		if (game->data.map[(int)floor(game->player.y)][(int)floor(game->player.x - ((cos(game->player.alpha)) * SPEED))] != '1' &&
+			!(game->data.map[(int)floor(game->player.y)][(int)floor(game->player.x - ((cos(game->player.alpha)) * SPEED))] == '4' && game->trip == 0))
 			game->player.x -= ((cos(game->player.alpha)) * SPEED);
 	}
 	move_player2(game);

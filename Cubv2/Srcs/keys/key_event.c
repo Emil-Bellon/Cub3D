@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 14:07:47 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/20 19:11:28 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/21 13:34:46 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		key_pressed(int keycode, t_game *game)
 	if (keycode == T)
 	{
 		if (game->trip == 0)
-			game->trip = 4;
+			game->trip = 5;
 		else
 			game->trip = 0;
 	}

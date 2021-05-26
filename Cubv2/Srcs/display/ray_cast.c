@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 12:24:22 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/13 11:51:57 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/26 15:14:15 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,24 @@ double			ft_dda(t_game *game, int x_win, t_rc_var *var)
 			var->mapY += var->stepY;
 			var->side = 1;
 		}
-		if (game->data.map[var->mapY][var->mapX] == '1')
+		if (game->data.map[var->mapY][var->mapX] == '1' || (game->data.map[var->mapY][var->mapX] == '4' && game->trip == 0))
 			var->hit = 1;
+		if (game->data.map[var->mapY][var->mapX] == '2' || game->data.map[var->mapY][var->mapX] == '3')
+		{
+			if (game->lst_sprite == NULL)
+			{
+				game->lst_sprite = ft_lst_new(var->mapX + 0.5, var->mapY + 0.5, game->data.map[var->mapY][var->mapX] - '0');
+				// printf("sprite x = %f, y = %f\n", game->lst_sprite->x, game->lst_sprite->y);
+			}
+			else if (ft_in_lst(game->lst_sprite, var->mapX + 0.5, var->mapY + 0.5) == 0)
+			{
+				// puts("ok2");
+				ft_lstadd_frt(&game->lst_sprite, ft_lst_new(var->mapX + 0.5, var->mapY + 0.5, game->data.map[var->mapY][var->mapX] - '0'));
+			}
+			// printf("map x = %f, y = %f\n", var->mapX + 0.5, var->mapY + 0.5);
+		}
 	}
 	game->player.side = var->side;
+	game->zbuffer[x_win] = ft_dist(var);
 	return (ft_dist(var));
 }
