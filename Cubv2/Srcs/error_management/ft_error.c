@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 13:04:27 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/11 15:31:44 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/27 17:09:07 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,16 @@ void	ft_free_game(t_game *game)
 		free(game->data.we);
 	if (game->data.ea != NULL)
 		free(game->data.ea);
-	if (game->data.sprite != NULL)
-		free(game->data.sprite);
 	if (game->data.map != NULL)
 		ft_free_strs(game->data.map);
+	if (game->txtr != NULL)
+	{
+		free(game->txtr->texture);
+		free(game->txtr);
+	}
+	if (game->lst_sprite != NULL)
+		ft_clear_lst(&game->lst_sprite);
+	free(game);
 }
 
 void	ft_exit(t_game *game)

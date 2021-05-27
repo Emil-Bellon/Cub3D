@@ -1,10 +1,10 @@
 NO ./Txtr/grosse weed wall.xpm
-WE ./Txtr/txtr.xpm 
+WE ./Txtr/txtr.xpm
 SO ./Txtr/grosse weed wall.xpm
-EA    ./Txtr/txtr.xpm 
+EA    ./Txtr/txtr.xpm
 
 F 150,100,50
-C 100,500,254
+C 100,255,254
 
         1111111111111111111111111
         1000000000110000000000001

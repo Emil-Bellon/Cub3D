@@ -6,13 +6,13 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 16:44:44 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/26 13:40:55 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/27 16:55:20 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Headers/cub3d.h"
 
-static int	ft_ischar(char *str, char c)
+int	ft_ischar(char *str, char c)
 {
 	int	i;
 
@@ -23,71 +23,72 @@ static int	ft_ischar(char *str, char c)
 	return (0);
 }
 
-static void	ft_check_txtr_path(t_game *game)
+static void	ft_init_txtr_addr(t_game *g)
 {
-	int	fd;
 	int	i;
 
-	game->txtr = ft_calloc(sizeof(t_txtr), 1);
-	game->txtr->texWidth = 64;
-	game->txtr->texHeight = 64;
-	game->txtr->texture = ft_calloc(sizeof(t_xpm), 6);
-	if (!(game->txtr->texture))
-		ft_error("Malloc fail", game, NULL);
-	fd = open(game->data.no, O_RDONLY);
-	if (fd < 0)
-		ft_error("Can not open NO path texture", game, NULL);
-	close(fd);
-	game->txtr->texture[0].img = mlx_xpm_file_to_image(game->mlx->mlx_ptr, game->data.no, &(game->txtr->texture[0].w), &(game->txtr->texture[0].h));
-	fd = open(game->data.so, O_RDONLY);
-	if (fd < 0)
-		ft_error("Can not open SO path texture", game, NULL);
-	close(fd);
-	game->txtr->texture[1].img = mlx_xpm_file_to_image(game->mlx->mlx_ptr, game->data.so, &game->txtr->texture[1].w, &game->txtr->texture[1].h);
-	fd = open(game->data.we, O_RDONLY);
-	if (fd < 0)
-		ft_error("Can not open WE path texture", game, NULL);
-	close(fd);
-	game->txtr->texture[2].img = mlx_xpm_file_to_image(game->mlx->mlx_ptr, game->data.we, &game->txtr->texture[2].w, &game->txtr->texture[2].h);
-	fd = open(game->data.ea, O_RDONLY);
-	if (fd < 0)
-		ft_error("Can not open EA path texture", game, NULL);
-	close(fd);
-	game->txtr->texture[3].img = mlx_xpm_file_to_image(game->mlx->mlx_ptr, game->data.ea, &game->txtr->texture[3].w, &game->txtr->texture[3].h);
-	game->txtr->texture[4].img = mlx_xpm_file_to_image(game->mlx->mlx_ptr, "./Txtr/mush.xpm", &game->txtr->texture[4].w, &game->txtr->texture[4].h);
-	game->txtr->texture[5].img = mlx_xpm_file_to_image(game->mlx->mlx_ptr, "./Txtr/shower.xpm", &game->txtr->texture[5].w, &game->txtr->texture[5].h);
 	i = -1;
 	while (++i < 6)
-		game->txtr->texture[i].addr = (int *)mlx_get_data_addr(game->txtr->texture[i].img,
-			&game->txtr->texture[i].bytes, &game->txtr->texture[i].sizeline,
-				&game->txtr->texture[i].endian);
+		g->txtr->texture[i].addr = (int *)mlx_get_data_addr(
+				g->txtr->texture[i].img, &g->txtr->texture[i].bytes,
+				&g->txtr->texture[i].sizeline, &g->txtr->texture[i].endian);
 }
 
-static void	fill_flood_map(t_game *game, int y, int x)
+static void	ft_check_txtr_path2(t_game *g)
 {
-	if (y < 0 || x < 0 || y > (ft_strslen(game->data.map) - 1) || \
-		x > ((int)ft_strlen(game->data.map[y]) - 1))
-		ft_error("The player is not surrounded by walls", game, NULL);
-	if (ft_ischar("|.$*", game->data.map[y][x]))
-		return ;
-	if (game->data.map[y][x] == '1')
-	{
-		game->data.map[y][x] = '|';
-		return ;
-	}
-	if (game->data.map[y][x] == '0')
-		game->data.map[y][x] = '.';
-	if (game->data.map[y][x] == '2')
-		game->data.map[y][x] = '$';
-	if (game->data.map[y][x] == '3')
-		game->data.map[y][x] = '*';
-	fill_flood_map(game, y - 1, x);
-	fill_flood_map(game, y + 1, x);
-	fill_flood_map(game, y, x - 1);
-	fill_flood_map(game, y, x + 1);
+	int	fd;
+
+	fd = open(g->data.we, O_RDONLY);
+	if (fd < 0)
+		ft_error("Can not open WE path texture", g, NULL);
+	close(fd);
+	g->txtr->texture[2].img = mlx_xpm_file_to_image(g->mlx->mlx_ptr,
+			g->data.we, &g->txtr->texture[2].w,
+			&g->txtr->texture[2].h);
+	fd = open(g->data.ea, O_RDONLY);
+	if (fd < 0)
+		ft_error("Can not open EA path texture", g, NULL);
+	close(fd);
+	g->txtr->texture[3].img = mlx_xpm_file_to_image(g->mlx->mlx_ptr,
+			g->data.ea, &g->txtr->texture[3].w,
+			&g->txtr->texture[3].h);
+	g->txtr->texture[4].img = mlx_xpm_file_to_image(g->mlx->mlx_ptr,
+			"./Txtr/mush.xpm", &g->txtr->texture[4].w,
+			&g->txtr->texture[4].h);
+	g->txtr->texture[5].img = mlx_xpm_file_to_image(g->mlx->mlx_ptr,
+			"./Txtr/shower.xpm", &g->txtr->texture[5].w,
+			&g->txtr->texture[5].h);
+	ft_init_txtr_addr(g);
 }
 
-void		ft_check_data(t_game *game)
+static void	ft_check_txtr_path(t_game *g)
+{
+	int	fd;
+
+	g->txtr = ft_calloc(sizeof(t_txtr), 1);
+	g->txtr->texWidth = 64;
+	g->txtr->texHeight = 64;
+	g->txtr->texture = ft_calloc(sizeof(t_xpm), 6);
+	if (!(g->txtr->texture))
+		ft_error("Malloc fail", g, NULL);
+	fd = open(g->data.no, O_RDONLY);
+	if (fd < 0)
+		ft_error("Can not open NO path texture", g, NULL);
+	close(fd);
+	g->txtr->texture[0].img = mlx_xpm_file_to_image(g->mlx->mlx_ptr,
+			g->data.no, &(g->txtr->texture[0].w),
+			&(g->txtr->texture[0].h));
+	fd = open(g->data.so, O_RDONLY);
+	if (fd < 0)
+		ft_error("Can not open SO path texture", g, NULL);
+	close(fd);
+	g->txtr->texture[1].img = mlx_xpm_file_to_image(g->mlx->mlx_ptr,
+			g->data.so, &g->txtr->texture[1].w,
+			&g->txtr->texture[1].h);
+	ft_check_txtr_path2(g);
+}
+
+void	ft_check_data(t_game *game)
 {
 	ft_check_txtr_path(game);
 	fill_flood_map(game, game->player.y, game->player.x);

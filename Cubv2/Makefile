@@ -6,7 +6,7 @@
 #    By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/23 12:34:52 by ebellon           #+#    #+#              #
-#    Updated: 2021/05/25 20:03:53 by ebellon          ###   ########lyon.fr    #
+#    Updated: 2021/05/27 17:41:14 by ebellon          ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,9 +19,13 @@ FILES			=	error_management/ft_error.c \
 					parsing/parse_tool.c \
 					parsing/check_data.c \
 					game_actions/player_move.c \
+					game_actions/player_move2.c \
 					display/ray_cast.c \
 					display/draw_txtr.c \
-					display/draw_sprite.c
+					display/draw_sprite.c \
+					display/trip.c \
+					display/sprite_utils.c \
+					display/display_utils.c
 
 INC_FILES		= cub3d.h
 INC_PATH		= ./Headers/
@@ -31,7 +35,7 @@ SRC				= $(addprefix ${SRC_PATH}, ${FILES})
 
 CC				= gcc
 OBJS			= ${SRC:.c=.o}
-FLAGS			= -Wall -Wextra -Werror -g3
+FLAGS			= -Wall -Wextra -Werror
 
 #LIBRARY
 NAME_LIBFT		= libft.a

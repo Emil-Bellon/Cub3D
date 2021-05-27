@@ -6,65 +6,75 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/13 11:27:55 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/26 14:59:37 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/27 17:14:52 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Headers/cub3d.h"
 
-void	draw_wall(t_game *game, t_size_wall size_wall, t_txtr *txtr, int x)
+void	ft_dda_x_inf_y(t_rc_var *var)
+{
+	var->sideDistX += var->deltaDistX;
+	var->mapX += var->stepX;
+	var->side = 0;
+}
+
+void	ft_dda_x_sup_y(t_rc_var *var)
+{
+	var->sideDistY += var->deltaDistY;
+	var->mapY += var->stepY;
+	var->side = 1;
+}
+
+static void	ft_init_textr(t_game *g, t_txtr *t)
+{
+	if (g->data.map[t->var.mapY][t->var.mapX] == '1' ||
+		(g->data.map[t->var.mapY][t->var.mapX] == '4' && g->trip == 0))
+	{
+		if (t->var.side == 0)
+		{
+			if (g->player.x > t->var.mapX)
+				t->texNum = 3;
+			else
+				t->texNum = 2;
+		}
+		else
+		{
+			if (g->player.y > t->var.mapY)
+				t->texNum = 1;
+			else
+				t->texNum = 0;
+		}
+	}
+	if (t->var.side == 0)
+		t->wallX = t->var.posY + t->var.perpWallDist * t->var.rayDirY;
+	else
+		t->wallX = t->var.posX + t->var.perpWallDist * t->var.rayDirX;
+}
+
+void	draw_wall(t_game *game, t_size_wall size, t_txtr *t, int x)
 {
 	int	y;
 	int	color;
 
-	if (game->data.map[txtr->var.mapY][txtr->var.mapX] == '1'|| (game->data.map[txtr->var.mapY][txtr->var.mapX] == '4' && game->trip == 0))
+	ft_init_textr(game, t);
+	t->wallX -= floor((t->wallX));
+	t->texX = (int)(t->wallX * (double)(t->texWidth));
+	if (t->var.side == 0 && t->var.rayDirX > 0)
+		t->texX = t->texWidth - t->texX - 1;
+	if (t->var.side == 1 && t->var.rayDirY < 0)
+		t->texX = t->texWidth - t->texX - 1;
+	t->step = 1.0 * t->texHeight / size.height;
+	t->texPos = (size.start - game->data.ry / 2 + size.height / 2) * t->step;
+	y = size.start - 1;
+	while (++y < size.stop)
 	{
-		if (txtr->var.side == 0)
-		{
-			if (game->player.x > txtr->var.mapX)
-				txtr->texNum = 3;
-			else
-				txtr->texNum = 2;
-		}
-		else
-		{
-			if (game->player.y > txtr->var.mapY)
-				txtr->texNum = 1;
-			else
-				txtr->texNum = 0;
-		}
-	}
-	
-	//calculate value of wallX
-	//where exactly the wall was hit
-	if (txtr->var.side == 0)
-		txtr->wallX = txtr->var.posY + txtr->var.perpWallDist * txtr->var.rayDirY;
-	else
-		txtr->wallX = txtr->var.posX + txtr->var.perpWallDist * txtr->var.rayDirX;
-	txtr->wallX -= floor((txtr->wallX));
-
-	//x coordinate on the texture
-	txtr->texX = (int)(txtr->wallX * (double)(txtr->texWidth));
-	if(txtr->var.side == 0 && txtr->var.rayDirX > 0)
-		txtr->texX = txtr->texWidth - txtr->texX - 1;
-	if(txtr->var.side == 1 && txtr->var.rayDirY < 0)
-		txtr->texX = txtr->texWidth - txtr->texX - 1;
-
-	// How much to increase the texture coordinate per screen pixel
-	txtr->step = 1.0 * txtr->texHeight / size_wall.height;
-	// Starting texture coordinate
-	txtr->texPos = (size_wall.start - game->data.ry / 2 + size_wall.height / 2) * txtr->step;
-	y = size_wall.start;
-	while (y < size_wall.stop)
-	{
-		// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
-		txtr->texY = (int)(txtr->texPos) & (txtr->texHeight - 1);
-		txtr->texPos += txtr->step;
-		color = txtr->texture[txtr->texNum].addr[txtr->texture[txtr->texNum].h * txtr->texY + txtr->texX];
-		//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
-		if(txtr->var.side == 1)
+		t->texY = (int)(t->texPos) & (t->texHeight - 1);
+		t->texPos += t->step;
+		color = t->texture[t->texNum].addr[t->texture[t->texNum].h
+			* t->texY + t->texX];
+		if (t->var.side == 1)
 			color = (color >> 1) & 8355711;
 		my_mlx_pixel_put(game->mlx, x, y, color);
-		y++;
 	}
 }

@@ -6,132 +6,97 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/25 14:13:05 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/26 15:08:19 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/27 17:20:04 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Headers/cub3d.h"
 
-void	ft_lstadd_frt(t_lst_sprite **lst, t_lst_sprite *new)
+static void	ft_init_sprite2(t_game *g)
 {
-	new->next = *lst;
-	*lst = new;
-	// printf("coucou\n");
+	g->spr_var.drawStartX = -g->spr_var.spriteWidth / 2
+		+ g->spr_var.spriteScreenX;
+	if (g->spr_var.drawStartX < 0)
+		g->spr_var.drawStartX = 0;
+	g->spr_var.drawEndX = g->spr_var.spriteWidth / 2
+		+ g->spr_var.spriteScreenX;
+	if (g->spr_var.drawEndX >= g->data.rx)
+		g->spr_var.drawEndX = g->data.rx - 1;
 }
 
-t_lst_sprite	*ft_lst_new(float x, float y, int id)
+static void	ft_init_sprite(t_game *g, t_rc_var *v)
 {
-	t_lst_sprite	*lst;
-
-	lst = malloc(sizeof(t_lst_sprite));
-	if (lst)
-	{
-		lst->x = x;
-		lst->y = y;
-		lst->id = id;
-		lst->next = NULL;
-	}
-	return (lst);
+	g->spr_var.spriteX = g->lst_sprite->x - v->posX;
+	g->spr_var.spriteY = g->lst_sprite->y - v->posY;
+	g->spr_var.invDet = 1.0 / (v->planeX * v->dirY - v->dirX * v->planeY);
+	g->spr_var.transformX = g->spr_var.invDet
+		* (v->dirY * g->spr_var.spriteX - v->dirX * g->spr_var.spriteY);
+	g->spr_var.transformY = g->spr_var.invDet
+		* (-v->planeY * g->spr_var.spriteX + v->planeX * g->spr_var.spriteY);
+	g->spr_var.spriteScreenX = (int)((g->data.rx / 2)
+			* (1 + g->spr_var.transformX / g->spr_var.transformY));
+	g->spr_var.spriteHeight = abs((int)(g->data.ry / g->spr_var.transformY));
+	g->spr_var.drawStartY = -g->spr_var.spriteHeight / 2 + g->data.ry / 2;
+	if (g->spr_var.drawStartY < 0)
+		g->spr_var.drawStartY = 0;
+	g->spr_var.drawEndY = g->spr_var.spriteHeight / 2 + g->data.ry / 2;
+	if (g->spr_var.drawEndY >= g->data.ry)
+		g->spr_var.drawEndY = g->data.ry - 1;
+	g->spr_var.spriteWidth = abs((int)(g->data.ry / g->spr_var.transformY));
+	ft_init_sprite2(g);
 }
 
-void	ft_clear_lst(t_lst_sprite **lst)
-{
-	t_lst_sprite *tmp;
-
-	while(*lst)
-	{
-		tmp = (*lst)->next;
-		free(*lst);
-		*lst = tmp;
-	}
-	*lst = NULL;
-}
-
-int		ft_in_lst(t_lst_sprite *lst, float x, float y)
-{
-	while (lst)
-	{
-		if (lst->x == x && lst->y == y)
-			return (1);
-		lst = lst->next;
-	}
-	return (0);
-}
-
-void	ft_draw_sprite(t_game *game, t_rc_var *var, t_txtr *txtr)
+static void	ft_draw_pix_sprite(t_game *g, t_txtr *t, int startY, int startX)
 {
 	int	color;
-	int	startY;
-	int	startX;
-	
-	while (game->lst_sprite)
+
+	color = 0;
+	g->spr_var.d = (startY) * 256 - g->data.ry * 128
+		+ g->spr_var.spriteHeight * 128;
+	g->spr_var.texY = ((g->spr_var.d * t->texHeight)
+			/ g->spr_var.spriteHeight) / 256;
+	if (g->lst_sprite->id == 2)
+		color = t->texture[4].addr[t->texture[4].h
+			* g->spr_var.texY + g->spr_var.texX];
+	else if (g->lst_sprite->id == 3)
+		color = t->texture[5].addr[t->texture[5].h
+			* g->spr_var.texY + g->spr_var.texX];
+	if ((color & 0x00FFFFFF) != 0 && !(g->lst_sprite->id == 2 && g->trip > 0))
+		my_mlx_pixel_put(g->mlx, startX, startY, color);
+}
+
+static int	ft_texx(t_game *g, t_txtr *t, int startX)
+{
+	int	ret;
+
+	ret = (int)(256 * (startX - (-g->spr_var.spriteWidth / 2
+					+ g->spr_var.spriteScreenX)) * t->texWidth
+			/ g->spr_var.spriteWidth) / 256;
+	return (ret);
+}
+
+void	ft_draw_sprite(t_game *g, t_rc_var *var, t_txtr *t)
+{
+	int				startY;
+	int				startX;
+	t_lst_sprite	*fst;
+
+	fst = g->lst_sprite;
+	while (g->lst_sprite)
 	{
-		// printf("sprite = %p\n", game->lst_sprite);
-		// printf("sprite->next = %p\n", game->lst_sprite->next);
-		//translate sprite position to relative to camera
-		game->spr_var.spriteX = game->lst_sprite->x - var->posX;
-		game->spr_var.spriteY = game->lst_sprite->y - var->posY;
-
-		//transform sprite with the inverse camera matrix
-		// [ planeX   dirX ] -1                                       [ dirY      -dirX ]
-		// [               ]       =  1/(planeX*dirY-dirX*planeY) *   [                 ]
-		// [ planeY   dirY ]                                          [ -planeY  planeX ]
-
-		game->spr_var.invDet = 1.0 / (var->planeX * var->dirY - var->dirX * var->planeY); //required for correct matrix multiplication
-
-		game->spr_var.transformX = game->spr_var.invDet * (var->dirY * game->spr_var.spriteX - var->dirX * game->spr_var.spriteY);
-		game->spr_var.transformY = game->spr_var.invDet * (-var->planeY * game->spr_var.spriteX + var->planeX * game->spr_var.spriteY); //this is actually the depth inside the screen, that what Z is in 3D
-
-		game->spr_var.spriteScreenX = (int)((game->data.rx / 2) * (1 + game->spr_var.transformX / game->spr_var.transformY));
-
-		//calculate height of the sprite on screen
-		game->spr_var.spriteHeight = abs((int)(game->data.ry / (game->spr_var.transformY))); //using 'transformY' instead of the real distance prevents fisheye
-		//calculate lowest and highest pixel to fill in current stripe
-		game->spr_var.drawStartY = -game->spr_var.spriteHeight / 2 + game->data.ry / 2;
-		if(game->spr_var.drawStartY < 0)
-			game->spr_var.drawStartY = 0;
-		game->spr_var.drawEndY = game->spr_var.spriteHeight / 2 + game->data.ry / 2;
-		if(game->spr_var.drawEndY >= game->data.ry)
-			game->spr_var.drawEndY = game->data.ry - 1;
-
-		//calculate width of the sprite
-		game->spr_var.spriteWidth = abs((int)(game->data.ry / (game->spr_var.transformY)));
-		game->spr_var.drawStartX = -game->spr_var.spriteWidth / 2 + game->spr_var.spriteScreenX;
-		if(game->spr_var.drawStartX < 0)
-			game->spr_var.drawStartX = 0;
-		game->spr_var.drawEndX = game->spr_var.spriteWidth / 2 + game->spr_var.spriteScreenX;
-		if(game->spr_var.drawEndX >= game->data.rx)
-			game->spr_var.drawEndX = game->data.rx - 1;
-
-		//loop through every vertical stripe of the sprite on screen
-		startX = game->spr_var.drawStartX;
-		while (startX < game->spr_var.drawEndX)
+		ft_init_sprite(g, var);
+		startX = g->spr_var.drawStartX - 1;
+		while (++startX < g->spr_var.drawEndX)
 		{
-			game->spr_var.texX = (int)(256 * (startX - (-game->spr_var.spriteWidth / 2 + game->spr_var.spriteScreenX)) * txtr->texWidth / game->spr_var.spriteWidth) / 256;
-			//the conditions in the if are:
-			//1) it's in front of camera plane so you don't see things behind you
-			//2) it's on the screen (left)
-			//3) it's on the screen (right)
-			//4) ZBuffer, with perpendicular distance
-			// printf("drawStartX = %d, transformY = %f, zbuf = %f\n", game->spr_var.drawStartX, game->spr_var.transformY, game->zbuffer[game->spr_var.drawStartX]);
-			startY = game->spr_var.drawStartY;
-			if(game->spr_var.transformY > 0 && startX > 0 && startX < game->data.rx && game->spr_var.transformY < game->zbuffer[startX])
-			{
-				while (startY < game->spr_var.drawEndY) //for every pixel of the current stripe
-				{
-					game->spr_var.d = (startY) * 256 - game->data.ry * 128 + game->spr_var.spriteHeight * 128; //256 and 128 factors to avoid floats
-					game->spr_var.texY = ((game->spr_var.d * txtr->texHeight) / game->spr_var.spriteHeight) / 256;
-					if (game->lst_sprite->id == 2)
-						color = txtr->texture[4].addr[txtr->texture[4].h * game->spr_var.texY + game->spr_var.texX]; //get current color from the texture
-					else if (game->lst_sprite->id == 3)
-						color = txtr->texture[5].addr[txtr->texture[5].h * game->spr_var.texY + game->spr_var.texX];
-					if((color & 0x00FFFFFF) != 0 && !(game->lst_sprite->id == 2 && game->trip > 0))
-						my_mlx_pixel_put(game->mlx, startX, startY, color); //paint pixel if it isn't black, black is the invisible color
-					startY++;
-				}
-			}
-			startX++;
+			g->spr_var.texX = ft_texx(g, t, startX);
+			startY = g->spr_var.drawStartY - 1;
+			if (g->spr_var.transformY > 0 && startX > 0
+				&& startX < g->data.rx
+				&& g->spr_var.transformY < g->zbuffer[startX])
+				while (++startY < g->spr_var.drawEndY)
+					ft_draw_pix_sprite(g, t, startY, startX);
 		}
-		game->lst_sprite = game->lst_sprite->next;
+		g->lst_sprite = g->lst_sprite->next;
 	}
+	g->lst_sprite = fst;
 }

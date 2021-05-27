@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 15:13:09 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/26 13:57:19 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/27 17:33:25 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@
 # define R_ARR 124
 # define ESC 53
 # define SPEED 0.15
-# define ROTATE 0.07535
+# define ROT 0.07535
 # define SIZE 50
 # define WINX 1200
 # define WINY 900
 
-typedef struct	s_col
+typedef struct s_col
 {
 	int	x;
 	int	start;
@@ -44,22 +44,22 @@ typedef struct	s_col
 	int	color;
 }				t_col;
 
-typedef struct	s_size_wall
+typedef struct s_size_wall
 {
 	int	start;
 	int	stop;
 	int	height;
 }				t_size_wall;
 
-typedef struct	s_lst_sprite
+typedef struct s_lst_sprite
 {
 	float					x;
 	float					y;
 	int						id;
-	struct	s_lst_sprite	*next;
+	struct s_lst_sprite		*next;
 }				t_lst_sprite;
 
-typedef struct	s_spr_var
+typedef struct s_spr_var
 {
 	double	spriteX;
 	double	spriteY;
@@ -78,7 +78,7 @@ typedef struct	s_spr_var
 	int		d;
 }				t_spr_var;
 
-typedef struct	s_rc_var
+typedef struct s_rc_var
 {
 	double	posX;
 	double	posY;
@@ -104,7 +104,7 @@ typedef struct	s_rc_var
 	int		side;
 }				t_rc_var;
 
-typedef struct	s_key 
+typedef struct s_key
 {
 	int	w;
 	int	a;
@@ -117,7 +117,7 @@ typedef struct	s_key
 	int	esc;
 }				t_key;
 
-typedef struct	s_xpm
+typedef struct s_xpm
 {
 	void	*img;
 	int		*addr;
@@ -128,7 +128,7 @@ typedef struct	s_xpm
 	int		sizeline;
 }				t_xpm;
 
-typedef struct	s_txtr
+typedef struct s_txtr
 {
 	t_xpm		*texture;
 	int			texWidth;
@@ -143,24 +143,23 @@ typedef struct	s_txtr
 	t_rc_var	var;
 }				t_txtr;
 
-typedef struct	s_player
+typedef struct s_player
 {
 	int		alive;
-	
+
 	float	x;
 	float	y;
-	
+
 	float	alpha;
 	float	dirX;
 	float	dirY;
-	
+
 	float	planeX;
 	float	planeY;
 	int		side;
 }				t_player;
 
-
-typedef struct	s_mlx
+typedef struct s_mlx
 {
 	void	*mlx_ptr;
 	void	*mlx_win;
@@ -171,7 +170,7 @@ typedef struct	s_mlx
 	int		endian;
 }				t_mlx;
 
-typedef struct	s_data
+typedef struct s_data
 {
 	t_key	key;
 
@@ -185,14 +184,13 @@ typedef struct	s_data
 	char	*so;
 	char	*we;
 	char	*ea;
-	char	*sprite;
 
 	int		map_x;
 	int		map_y;
 	char	**map;
 }				t_data;
 
-typedef struct	s_game
+typedef struct s_game
 {
 	t_data			data;
 	t_player		player;
@@ -200,42 +198,52 @@ typedef struct	s_game
 	t_txtr			*txtr;
 	t_lst_sprite	*lst_sprite;
 	t_spr_var		spr_var;
-	float			zbuffer[2000];
+	float			zbuffer[WINX];
 
 	float			trip;
 	int				flip;
 	int				trip_color;
 }				t_game;
 
-void	ft_parse_no_txtr(char *line, t_game *game);
-void	ft_parse_so_txtr(char *line, t_game *game);
-void	ft_parse_ea_txtr(char *line, t_game *game);
-void	ft_parse_we_txtr(char *line, t_game *game);
-void	ft_parse_s_txtr(char *line, t_game *game);
-void	ft_free_strs(char **tab);
-void	ft_parse_res(char *line, t_game *game);
-void	ft_parse_rgb_f(char *line, t_game *game);
-void	ft_parse_rgb_c(char *line, t_game *game);
-int		ft_strslen(char **strs);
-int		ft_is_char_map(char c);
-char	**ft_strsjoin(char **s1, char *s2);
-void	ft_parse_main(char *path, t_game *game);
-void	ft_error(char *error_msg, t_game *game, void *data_to_free);
-void	ft_error_res(char **res, t_game *game, char *line);
-void	ft_exit(t_game *game);
-void	ft_reset_map(t_game *game);
-void	ft_check_data(t_game *game);
-void	move_player(t_game *game);
-int		key_pressed(int keycode, t_game *game);
-int		key_released(int keycode, t_game *game);
-double	modulo(double x, double y);
-double	ft_dda(t_game *game, int x_win, t_rc_var *var);
-void	draw_wall(t_game *game, t_size_wall size_wall, t_txtr *txtr, int x);
-void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
-void	ft_lstadd_frt(t_lst_sprite **lst, t_lst_sprite *new);
-void	ft_draw_sprite(t_game *game, t_rc_var *var, t_txtr *txtr);
+void			ft_parse_line_data(char *line, t_game *game);
+void			ft_free_strs(char **tab);
+void			ft_parse_res(char *line, t_game *game);
+void			ft_parse_rgb_f(char *line, t_game *game);
+void			ft_parse_rgb_c(char *line, t_game *game);
+int				ft_strslen(char **strs);
+int				ft_is_char_map(char c);
+char			**ft_strsjoin(char **s1, char *s2);
+int				ft_ischar(char *str, char c);
+void			fill_flood_map(t_game *game, int y, int x);
+void			ft_parse_main(char *path, t_game *game);
+void			ft_error(char *error_msg, t_game *game, void *data_to_free);
+void			ft_error_res(char **res, t_game *game, char *line);
+void			ft_exit(t_game *game);
+void			ft_reset_map(t_game *game);
+void			ft_check_data(t_game *game);
+void			move_player(t_game *game);
+int				key_pressed(int keycode, t_game *game);
+int				key_released(int keycode, t_game *game);
+double			modulo(double x, double y);
+void			ft_key_r_arr(t_game *g);
+void			ft_key_l_arr(t_game *g);
+void			ft_key_a(t_game *g);
+void			ft_key_d(t_game *g);
+void			ft_dda_x_inf_y(t_rc_var *var);
+void			ft_dda_x_sup_y(t_rc_var *var);
+double			ft_dda(t_game *game, int x_win, t_rc_var *var);
+void			draw_wall(t_game *game,
+					t_size_wall size_wall, t_txtr *txtr, int x);
+void			my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
+t_size_wall		ft_get_wall_size(int x_win, t_game *game);
+void			ft_lstadd_frt(t_lst_sprite **lst, t_lst_sprite *new);
+void			ft_draw_sprite(t_game *game, t_rc_var *var, t_txtr *txtr);
 t_lst_sprite	*ft_lst_new(float x, float y, int id);
-void	ft_clear_lst(t_lst_sprite **lst);
-int		ft_in_lst(t_lst_sprite *lst, float x, float y);
+int				ft_lst_size(t_lst_sprite *lst);
+void			ft_clear_lst(t_lst_sprite **lst);
+int				ft_in_lst(t_lst_sprite *lst, float x, float y);
+void			draw_col(t_col col, t_game *game);
+void			draw_trip(int x_win, t_game *game, t_size_wall size_wall);
+void			ft_trip(t_game *game);
 
 #endif

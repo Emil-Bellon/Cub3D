@@ -6,13 +6,13 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 14:07:47 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/21 13:34:46 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/27 16:56:01 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Headers/cub3d.h"
 
-int		key_pressed(int keycode, t_game *game)
+int	key_pressed(int keycode, t_game *game)
 {
 	if (keycode == W)
 		game->data.key.w = 1;
@@ -38,7 +38,7 @@ int		key_pressed(int keycode, t_game *game)
 	return (0);
 }
 
-int		key_released(int keycode, t_game *game)
+int	key_released(int keycode, t_game *game)
 {
 	if (keycode == W)
 		game->data.key.w = 0;
