@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/13 11:27:55 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/27 17:14:52 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 13:37:51 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	draw_wall(t_game *game, t_size_wall size, t_txtr *t, int x)
 
 	ft_init_textr(game, t);
 	t->wallX -= floor((t->wallX));
-	t->texX = (int)(t->wallX * (double)(t->texWidth));
+	t->texX = (int)(t->wallX * (float)(t->texWidth));
 	if (t->var.side == 0 && t->var.rayDirX > 0)
 		t->texX = t->texWidth - t->texX - 1;
 	if (t->var.side == 1 && t->var.rayDirY < 0)

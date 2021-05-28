@@ -6,13 +6,13 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 14:11:21 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/27 17:08:40 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 15:22:19 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Headers/cub3d.h"
 
-double	modulo(double x, double y)
+float	modulo(float x, float y)
 {
 	x -= y * floor(x / y);
 	if (x >= 0.)

@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 15:10:54 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/27 16:49:39 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 14:05:44 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ void	ft_reset_map(t_game *game)
 				game->data.map[y][x] = '2';
 			if (game->data.map[y][x] == '*')
 				game->data.map[y][x] = '3';
+			if (game->data.map[y][x] == '&')
+				game->data.map[y][x] = '4';
 			x++;
 		}
 		y++;

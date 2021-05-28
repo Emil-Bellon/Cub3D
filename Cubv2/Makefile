@@ -6,7 +6,7 @@
 #    By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/23 12:34:52 by ebellon           #+#    #+#              #
-#    Updated: 2021/05/27 17:41:14 by ebellon          ###   ########lyon.fr    #
+#    Updated: 2021/05/28 13:38:30 by ebellon          ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ SRC				= $(addprefix ${SRC_PATH}, ${FILES})
 
 CC				= gcc
 OBJS			= ${SRC:.c=.o}
-FLAGS			= -Wall -Wextra -Werror
+FLAGS			= -Wall -Wextra -Werror -O3
 
 #LIBRARY
 NAME_LIBFT		= libft.a

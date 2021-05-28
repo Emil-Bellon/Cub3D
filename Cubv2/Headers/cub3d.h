@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 15:13:09 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/27 17:33:25 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 13:39:36 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@
 # define SPEED 0.15
 # define ROT 0.07535
 # define SIZE 50
-# define WINX 1200
-# define WINY 900
+# define WINX 1800
+# define WINY 1350
 
 typedef struct s_col
 {
@@ -61,11 +61,11 @@ typedef struct s_lst_sprite
 
 typedef struct s_spr_var
 {
-	double	spriteX;
-	double	spriteY;
-	double	invDet;
-	double	transformX;
-	double	transformY;
+	float	spriteX;
+	float	spriteY;
+	float	invDet;
+	float	transformX;
+	float	transformY;
 	int		spriteScreenX;
 	int		spriteHeight;
 	int		drawStartY;
@@ -80,24 +80,24 @@ typedef struct s_spr_var
 
 typedef struct s_rc_var
 {
-	double	posX;
-	double	posY;
-	double	dirX;
-	double	dirY;
-	double	planeX;
-	double	planeY;
+	float	posX;
+	float	posY;
+	float	dirX;
+	float	dirY;
+	float	planeX;
+	float	planeY;
 
-	double	cameraX;
-	double	rayDirX;
-	double	rayDirY;
+	float	cameraX;
+	float	rayDirX;
+	float	rayDirY;
 
 	int		mapX;
 	int		mapY;
-	double	sideDistX;
-	double	sideDistY;
-	double	deltaDistX;
-	double	deltaDistY;
-	double	perpWallDist;
+	float	sideDistX;
+	float	sideDistY;
+	float	deltaDistX;
+	float	deltaDistY;
+	float	perpWallDist;
 	int		stepX;
 	int		stepY;
 	int		hit;
@@ -134,11 +134,11 @@ typedef struct s_txtr
 	int			texWidth;
 	int			texHeight;
 	int			texNum;
-	double		wallX;
+	float		wallX;
 	int			texX;
 	int			texY;
-	double		step;
-	double		texPos;
+	float		step;
+	float		texPos;
 
 	t_rc_var	var;
 }				t_txtr;
@@ -224,14 +224,14 @@ void			ft_check_data(t_game *game);
 void			move_player(t_game *game);
 int				key_pressed(int keycode, t_game *game);
 int				key_released(int keycode, t_game *game);
-double			modulo(double x, double y);
+float			modulo(float x, float y);
 void			ft_key_r_arr(t_game *g);
 void			ft_key_l_arr(t_game *g);
 void			ft_key_a(t_game *g);
 void			ft_key_d(t_game *g);
 void			ft_dda_x_inf_y(t_rc_var *var);
 void			ft_dda_x_sup_y(t_rc_var *var);
-double			ft_dda(t_game *game, int x_win, t_rc_var *var);
+float			ft_dda(t_game *game, int x_win, t_rc_var *var);
 void			draw_wall(t_game *game,
 					t_size_wall size_wall, t_txtr *txtr, int x);
 void			my_mlx_pixel_put(t_mlx *data, int x, int y, int color);

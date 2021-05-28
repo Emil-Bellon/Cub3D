@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 16:40:21 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/27 17:05:41 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 13:37:51 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	ft_key_r_arr(t_game *g)
 {
-	double	oldDirX;
-	double	oldPlaneX;
+	float	oldDirX;
+	float	oldPlaneX;
 
 	g->player.alpha = modulo((g->player.alpha + ROT), (2 * PI));
 	oldDirX = g->player.dirX;
@@ -30,8 +30,8 @@ void	ft_key_r_arr(t_game *g)
 
 void	ft_key_l_arr(t_game *g)
 {
-	double	oldDirX;
-	double	oldPlaneX;
+	float	oldDirX;
+	float	oldPlaneX;
 
 	g->player.alpha = modulo((g->player.alpha - ROT), (2 * PI));
 	oldDirX = g->player.dirX;

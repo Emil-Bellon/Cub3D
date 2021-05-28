@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 13:40:24 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/27 16:51:34 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 14:06:18 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,10 @@ void	ft_parse_rgb_c(char *line, t_game *game)
 
 void	fill_flood_map(t_game *game, int y, int x)
 {
-	if (y < 0 || x < 0 || y > (ft_strslen(game->data.map) - 1) || \
-		x > ((int)ft_strlen(game->data.map[y]) - 1))
+	if (y < 0 || x < 0 || y > (ft_strslen(game->data.map) - 1)
+		|| x > ((int)ft_strlen(game->data.map[y]) - 1))
 		ft_error("The player is not surrounded by walls", game, NULL);
-	if (ft_ischar("|.$*", game->data.map[y][x]))
+	if (ft_ischar("|.$*&", game->data.map[y][x]))
 		return ;
 	if (game->data.map[y][x] == '1')
 	{
@@ -105,6 +105,8 @@ void	fill_flood_map(t_game *game, int y, int x)
 		game->data.map[y][x] = '$';
 	if (game->data.map[y][x] == '3')
 		game->data.map[y][x] = '*';
+	if (game->data.map[y][x] == '4')
+		game->data.map[y][x] = '&';
 	fill_flood_map(game, y - 1, x);
 	fill_flood_map(game, y + 1, x);
 	fill_flood_map(game, y, x - 1);

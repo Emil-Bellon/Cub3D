@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 12:24:22 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/27 17:13:29 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 13:37:51 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	init_rc_var(t_rc_var *var, t_game *game, int x)
 	var->dirY = game->player.dirY;
 	var->planeX = game->player.planeX;
 	var->planeY = game->player.planeY;
-	var->cameraX = 2 * x / (double)(game->data.rx) - 1;
+	var->cameraX = 2 * x / (float)(game->data.rx) - 1;
 	var->rayDirX = var->dirX + var->planeX * var->cameraX;
 	var->rayDirY = var->dirY + var->planeY * var->cameraX;
 	var->mapX = (int)(game->player.x);
@@ -70,7 +70,7 @@ static void	init_rc_var(t_rc_var *var, t_game *game, int x)
 	init_rc_var2(var);
 }
 
-static double	ft_dist(t_rc_var *v, t_game *game, int x_win)
+static float	ft_dist(t_rc_var *v, t_game *game, int x_win)
 {
 	if (v->side == 0)
 		v->perpWallDist = (v->mapX
@@ -83,7 +83,7 @@ static double	ft_dist(t_rc_var *v, t_game *game, int x_win)
 	return (v->perpWallDist);
 }
 
-double	ft_dda(t_game *game, int x_win, t_rc_var *var)
+float	ft_dda(t_game *game, int x_win, t_rc_var *var)
 {
 	init_rc_var(var, game, x_win);
 	while (var->hit == 0)
