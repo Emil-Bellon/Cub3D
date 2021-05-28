@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 16:44:44 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/27 16:55:20 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 12:35:26 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,16 @@ static void	ft_init_txtr_addr(t_game *g)
 
 static void	ft_check_txtr_path2(t_game *g)
 {
-	int	fd;
-
-	fd = open(g->data.we, O_RDONLY);
-	if (fd < 0)
-		ft_error("Can not open WE path texture", g, NULL);
-	close(fd);
 	g->txtr->texture[2].img = mlx_xpm_file_to_image(g->mlx->mlx_ptr,
 			g->data.we, &g->txtr->texture[2].w,
 			&g->txtr->texture[2].h);
-	fd = open(g->data.ea, O_RDONLY);
-	if (fd < 0)
-		ft_error("Can not open EA path texture", g, NULL);
-	close(fd);
+	if (g->txtr->texture[2].img == NULL)
+		ft_error("Can not open WE path texture", g, NULL);
 	g->txtr->texture[3].img = mlx_xpm_file_to_image(g->mlx->mlx_ptr,
 			g->data.ea, &g->txtr->texture[3].w,
 			&g->txtr->texture[3].h);
+	if (g->txtr->texture[3].img == NULL)
+		ft_error("Can not open EA path texture", g, NULL);
 	g->txtr->texture[4].img = mlx_xpm_file_to_image(g->mlx->mlx_ptr,
 			"./Txtr/mush.xpm", &g->txtr->texture[4].w,
 			&g->txtr->texture[4].h);
@@ -63,28 +57,22 @@ static void	ft_check_txtr_path2(t_game *g)
 
 static void	ft_check_txtr_path(t_game *g)
 {
-	int	fd;
-
 	g->txtr = ft_calloc(sizeof(t_txtr), 1);
 	g->txtr->texWidth = 64;
 	g->txtr->texHeight = 64;
 	g->txtr->texture = ft_calloc(sizeof(t_xpm), 6);
 	if (!(g->txtr->texture))
 		ft_error("Malloc fail", g, NULL);
-	fd = open(g->data.no, O_RDONLY);
-	if (fd < 0)
-		ft_error("Can not open NO path texture", g, NULL);
-	close(fd);
 	g->txtr->texture[0].img = mlx_xpm_file_to_image(g->mlx->mlx_ptr,
 			g->data.no, &(g->txtr->texture[0].w),
 			&(g->txtr->texture[0].h));
-	fd = open(g->data.so, O_RDONLY);
-	if (fd < 0)
-		ft_error("Can not open SO path texture", g, NULL);
-	close(fd);
+	if (g->txtr->texture[0].img == NULL)
+		ft_error("Can not open NO path texture", g, NULL);
 	g->txtr->texture[1].img = mlx_xpm_file_to_image(g->mlx->mlx_ptr,
 			g->data.so, &g->txtr->texture[1].w,
 			&g->txtr->texture[1].h);
+	if (g->txtr->texture[1].img == NULL)
+		ft_error("Can not open SO path texture", g, NULL);
 	ft_check_txtr_path2(g);
 }
 
