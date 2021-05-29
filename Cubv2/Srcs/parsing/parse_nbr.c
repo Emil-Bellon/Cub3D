@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 13:40:24 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/28 14:06:18 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 16:59:31 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,26 +33,37 @@ static int	ft_rgb_ok(char **rgb)
 	return (1);
 }
 
-void	ft_free_strs(char **tab)
+int	ft_coma(char *str)
 {
 	int	i;
+	int	nb_coma;
 
+	nb_coma = 0;
 	i = 0;
-	while (tab[i])
-		free(tab[i++]);
-	free(tab);
+	while (str[i])
+	{
+		if (str[i] == ',')
+			nb_coma++;
+		i++;
+	}
+	return (nb_coma);
 }
 
 void	ft_parse_rgb_f(char *line, t_game *game)
 {
+	int		i;
 	char	**rgb;
 	char	*str;
-	int		i;
 
 	i = 1;
 	while (line[i] == ' ')
 		i++;
 	str = ft_substr(line, i, ft_strlen(line));
+	if (ft_coma(str) != 2)
+	{
+		free(str);
+		ft_error("There is a problem with the F rgb", game, line);
+	}
 	rgb = ft_split(str, ',');
 	if (ft_rgb_ok(rgb) == 0)
 	{

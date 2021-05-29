@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 11:36:39 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/28 14:00:00 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 17:06:30 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,31 +75,32 @@ static void	ft_add_map_line(char *line, t_game *g)
 	g->data.map = ft_strsjoin(g->data.map, line);
 }
 
-static void	ft_parse_map_main(char *line, t_game *game, int fd, int ret_read)
+static void	ft_parse_map_main(char *l, t_game *game, int fd, int ret_read)
 {
 	game->data.map_x = 0;
-	while (ret_read == 1 && (line[0] == ' ' || line [0] == '1'))
+	while (ret_read == 1 && (l[0] == ' ' || l [0] == '1' || l [0] == '0'))
 	{
-		ft_add_map_line(line, game);
-		ret_read = get_next_line(fd, &line);
+		ft_add_map_line(l, game);
+		ret_read = get_next_line(fd, &l);
 	}
-	if (line[0] != 0)
-		ft_error("There is a wrong line after the map", game, line);
-	free(line);
-	while (get_next_line(fd, &line) == 1)
+	if (ret_read == 0 && l != NULL)
+		ft_add_map_line(l, game);
+	else if (l[0] != 0 && ret_read == 1)
+		ft_error("There is a wrong line after the map", game, l);
+	else
+		free(l);
+	while (get_next_line(fd, &l) == 1)
 	{
-		if (line[0] != 0)
-			ft_error("There is a wrong line after the map", game, line);
-		free(line);
+		if (l[0] != 0)
+			ft_error("There is a wrong line after the map", game, l);
+		free(l);
 	}
-	if (line[0] != 0)
-		ft_error("There is a wrong line after the map", game, line);
+	if (l[0] != 0)
+		ft_error("There is a wrong line after the map", game, l);
 	if (ret_read == -1)
-		ft_error("There was a problem while reading .cub file", game, line);
+		ft_error("There was a problem while reading .cub file", game, l);
 	game->data.map_y = ft_strslen(game->data.map);
-	if (game->player.alive == 0)
-		ft_error("There is no player in the map", game, line);
-	free(line);
+	free(l);
 }
 
 void	ft_parse_main(char *path, t_game *g)

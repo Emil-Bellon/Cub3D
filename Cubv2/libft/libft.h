@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 08:34:45 by ebellon           #+#    #+#             */
-/*   Updated: 2021/03/23 12:56:01 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 15:41:44 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-typedef struct	s_list
+typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
@@ -70,5 +70,6 @@ char			*ft_substr(char const *s, unsigned int start, size_t len);
 int				ft_tolower(int c);
 int				ft_toupper(int c);
 int				get_next_line(int fd, char **line);
+char			*ft_strndup(char *src, size_t size);
 
 #endif

@@ -1,32 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/28 13:48:49 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/29 15:07:35 by ebellon          ###   ########lyon.fr   */
+/*   Created: 2021/05/29 15:23:17 by ebellon           #+#    #+#             */
+/*   Updated: 2021/05/29 15:31:15 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putnbr_fd(int n, int fd)
+char	*ft_strndup(char *src, size_t size)
 {
-	long	nb;
+	char	*dst;
+	size_t	i;
 
-	nb = n;
-	if (nb < 0)
+	if (!src)
+		return (NULL);
+	dst = (char *)ft_calloc(sizeof(char), (size + 1));
+	if (!dst)
+		return (NULL);
+	i = 0;
+	while (i < size)
 	{
-		ft_putchar_fd('-', fd);
-		nb = -nb;
+		dst[i] = src[i];
+		i++;
 	}
-	if (nb >= 10)
-	{
-		ft_putnbr_fd(nb / 10, fd);
-		ft_putnbr_fd(nb % 10, fd);
-	}
-	else
-		ft_putchar_fd(nb + 48, fd);
+	return (dst);
 }

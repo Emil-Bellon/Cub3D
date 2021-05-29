@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 13:05:51 by ebellon           #+#    #+#             */
-/*   Updated: 2020/11/28 13:21:38 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 15:30:56 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	if (!s)
 		return (NULL);
 	len = ft_strlen(s);
-	if (!(str = ft_calloc(len + 1, sizeof(char))))
+	str = ft_calloc(len + 1, sizeof(char));
+	if (str == NULL)
 		return (NULL);
 	i = 0;
 	while (i < len)

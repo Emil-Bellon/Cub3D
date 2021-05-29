@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 17:35:13 by ebellon           #+#    #+#             */
-/*   Updated: 2021/03/24 15:16:42 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 15:57:22 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ char	*ft_strdup(const char *src)
 	i = 0;
 	while (src[i])
 		i++;
-	if (!(dest = ft_calloc((i + 1), sizeof(*src))))
+	dest = ft_calloc((i + 1), sizeof(*src));
+	if (dest == NULL)
 		return (NULL);
 	i = 0;
 	while (src[i])

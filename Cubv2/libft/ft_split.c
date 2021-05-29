@@ -6,58 +6,73 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/26 16:29:44 by ebellon           #+#    #+#             */
-/*   Updated: 2021/03/18 13:11:36 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 15:22:37 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		ft_countwords(const char *s, char c)
+static size_t	count_sep(const char *s, char c)
 {
-	int nb;
+	size_t	i;
+	size_t	nb_sep;
+	char	*s_cpy;
 
-	nb = 0;
-	while (*s)
+	s_cpy = (char *)s;
+	i = 0;
+	nb_sep = 0;
+	while (s_cpy[i])
 	{
-		if (*s && *s != c && (*(s + 1) == c || *(s + 1) == 0))
-			nb++;
-		s++;
+		while ((s_cpy[i] == c) && (s_cpy[i]))
+			i++;
+		while ((s_cpy[i] != c) && (s_cpy[i]))
+			i++;
+		if (s_cpy[i] == c && (s_cpy[i]))
+			nb_sep++;
+		if (s_cpy[i - 1] != c && (s_cpy[i] == 0))
+			nb_sep++;
 	}
-	return (nb);
+	return (nb_sep);
 }
 
-static char		**ft_freetab(char **tab, int i)
+static char	**free_tab(char **strs)
 {
-	while (tab[--i])
-		free(tab[i]);
-	free(tab);
-	return (0);
-}
-
-char			**ft_split(char const *s, char c)
-{
-	int			i;
-	const char	*start;
-	char		**tab;
+	size_t	i;
 
 	i = 0;
-	if (s == 0 || !(tab = malloc(sizeof(char*) * (ft_countwords(s, c) + 1))))
-		return (0);
+	while (strs[i])
+	{
+		free(strs[i]);
+		i++;
+	}
+	free(strs);
+	return (NULL);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char	**strs_split;
+	char	*start;
+	size_t	i;
+
+	strs_split = ft_calloc(sizeof(char *), (count_sep(s, c) + 1));
+	if ((count_sep(s, c) == 0))
+		return (strs_split);
+	i = 0;
 	while (*s)
 	{
 		while (*s && *s == c)
 			s++;
-		start = s;
+		start = (char *)s;
 		while (*s && *s != c)
 			s++;
-		if (s != start)
+		if (start != s)
 		{
-			if (!(tab[i] = malloc(sizeof(char) * (s - start + 1))))
-				return (ft_freetab(tab, i));
-			ft_strlcpy(tab[i], start, s - start + 1);
-			i++;
+			strs_split[i++] = ft_strndup(start, (s - start));
+			if (!strs_split)
+				return (free_tab(strs_split));
 		}
 	}
-	tab[i] = 0;
-	return (tab);
+	strs_split[i] = NULL;
+	return (strs_split);
 }

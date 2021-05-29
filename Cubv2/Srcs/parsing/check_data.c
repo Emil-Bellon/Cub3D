@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 16:44:44 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/28 14:02:09 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 17:06:08 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ static void	ft_check_txtr_path(t_game *g)
 
 void	ft_check_data(t_game *game)
 {
+	if (game->player.alive == 0)
+		ft_error("There is no player within the map", game, NULL);
 	ft_check_txtr_path(game);
 	fill_flood_map(game, game->player.y, game->player.x);
 	ft_reset_map(game);

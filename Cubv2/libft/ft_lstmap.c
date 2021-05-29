@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 15:46:21 by ebellon           #+#    #+#             */
-/*   Updated: 2020/12/07 19:12:56 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 15:06:18 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 	start = NULL;
 	while (lst)
 	{
-		if (!(flst = ft_lstnew((*f)(lst->content))))
+		flst = ft_lstnew((*f)(lst->content));
+		if (flst == NULL)
 		{
 			ft_lstclear(&start, (*del));
 			return (NULL);

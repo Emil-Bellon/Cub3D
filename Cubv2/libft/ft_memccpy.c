@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 13:52:53 by ebellon           #+#    #+#             */
-/*   Updated: 2020/11/24 18:01:39 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 15:06:48 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
 
 	chr = c;
 	dststr = dst;
-	srcstr = (char*)src;
+	srcstr = (char *)src;
 	i = 0;
 	while (i < n)
 	{

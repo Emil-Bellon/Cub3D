@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 16:44:56 by ebellon           #+#    #+#             */
-/*   Updated: 2020/12/10 14:28:13 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 15:37:35 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,28 @@
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char			*str;
-	size_t			i;
-	unsigned int	lens;
+	int		i;
+	size_t	j;
+	char	*str;
 
-	if (!s)
-		return (NULL);
-	lens = ft_strlen(s);
-	if (lens < len)
-		len = lens;
-	if (start > lens)
+	if (start >= ft_strlen(s))
 	{
-		if (!(str = ft_calloc(1, sizeof(char))))
+		str = (char *)ft_calloc(sizeof(*s), 1);
+		if (!str)
 			return (NULL);
+		*str = 0;
+		return (str);
 	}
-	else if (!(str = ft_calloc(len + 1, sizeof(char))))
+	if (len > ft_strlen(&s[start]))
+		len = ft_strlen(&s[start]);
+	str = (char *)malloc(sizeof(*s) * (len + 1));
+	if (!str)
 		return (NULL);
-	i = 0;
-	while (i < len && start < lens)
-	{
-		str[i] = s[start + i];
-		i++;
-	}
+	i = start - 1;
+	j = 0;
+	while (s[++i])
+		if (j < len)
+			str[j++] = s[i];
+	str[j] = 0;
 	return (str);
 }

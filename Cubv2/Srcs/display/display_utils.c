@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 17:33:00 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/27 17:42:56 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 14:23:51 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,14 @@ t_size_wall	ft_get_wall_size(int x_win, t_game *game)
 	if (size_wall.stop >= game->data.ry)
 		size_wall.stop = game->data.ry;
 	return (size_wall);
+}
+
+void	ft_free_strs(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+		free(tab[i++]);
+	free(tab);
 }

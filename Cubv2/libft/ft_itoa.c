@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/26 18:38:36 by ebellon           #+#    #+#             */
-/*   Updated: 2020/11/28 13:01:37 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 15:05:38 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static size_t	ft_count_digit(int n)
 	return (nb_digit);
 }
 
-char			*ft_itoa(int n)
+char	*ft_itoa(int n)
 {
 	long	nb;
 	size_t	nb_digit;
@@ -42,7 +42,8 @@ char			*ft_itoa(int n)
 
 	nb = n;
 	nb_digit = ft_count_digit(n);
-	if (!(nbr = ft_calloc(nb_digit + 1, sizeof(char))))
+	nbr = ft_calloc(nb_digit + 1, sizeof(char));
+	if (nbr == NULL)
 		return (NULL);
 	nb_digit--;
 	if (nb < 0)

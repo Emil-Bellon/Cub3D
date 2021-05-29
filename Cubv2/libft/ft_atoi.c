@@ -6,13 +6,13 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 05:35:20 by ebellon           #+#    #+#             */
-/*   Updated: 2021/03/18 14:32:12 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 15:00:32 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int				ft_atoi(const char *str)
+int	ft_atoi(const char *str)
 {
 	int		i;
 	long	nb;

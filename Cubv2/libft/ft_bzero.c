@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 06:25:40 by ebellon           #+#    #+#             */
-/*   Updated: 2020/11/23 07:26:14 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 15:02:42 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_bzero(void *s, size_t n)
 {
-	char *tmp;
+	char	*tmp;
 
 	tmp = s;
 	while (n > 0)

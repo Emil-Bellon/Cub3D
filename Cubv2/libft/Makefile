@@ -6,7 +6,7 @@
 #    By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/24 18:26:14 by ebellon           #+#    #+#              #
-#    Updated: 2021/05/28 13:38:46 by ebellon          ###   ########lyon.fr    #
+#    Updated: 2021/05/29 15:23:30 by ebellon          ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,8 @@ SRCS		=	ft_atoi.c \
 				ft_lstmap.c \
 				ft_lstadd_front.c \
 				ft_lstadd_back.c \
-				get_next_line.c
+				get_next_line.c \
+				ft_strndup.c
 
 OBJS		= ${SRCS:.c=.o}
 

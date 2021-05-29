@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 18:33:15 by ebellon           #+#    #+#             */
-/*   Updated: 2020/12/07 13:54:20 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 15:32:26 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	ft_isinset(char const c, char const *set)
 	return (0);
 }
 
-char		*ft_strtrim(char const *s1, char const *set)
+char	*ft_strtrim(char const *s1, char const *set)
 {
 	const char	*end;
 	char		*str;
@@ -32,13 +32,15 @@ char		*ft_strtrim(char const *s1, char const *set)
 		s1++;
 	if (!*s1)
 	{
-		if (!(str = ft_calloc(1, sizeof(char))))
+		str = ft_calloc(1, sizeof(char));
+		if (str == NULL)
 			return (NULL);
 		return (str);
 	}
 	while (ft_isinset(*end, set))
 		end--;
-	if (!(str = ft_calloc(end - s1 + 2, sizeof(char))))
+	str = ft_calloc(end - s1 + 2, sizeof(char));
+	if (str == NULL)
 		return (NULL);
 	ft_strlcpy(str, s1, end - s1 + 2);
 	return (str);
