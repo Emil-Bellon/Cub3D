@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 15:13:09 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/28 13:39:36 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 17:22:43 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,5 +245,6 @@ int				ft_in_lst(t_lst_sprite *lst, float x, float y);
 void			draw_col(t_col col, t_game *game);
 void			draw_trip(int x_win, t_game *game, t_size_wall size_wall);
 void			ft_trip(t_game *game);
+int				ft_close(t_game *game);
 
 #endif

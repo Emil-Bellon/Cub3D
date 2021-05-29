@@ -6,7 +6,7 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 14:07:47 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/27 16:56:01 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 17:27:09 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,11 @@ int	key_released(int keycode, t_game *game)
 		game->data.key.r_arr = 0;
 	if (keycode == ESC)
 		game->data.key.esc = 0;
+	return (0);
+}
+
+int	ft_close(t_game *game)
+{
+	ft_exit(game);
 	return (0);
 }

@@ -6,13 +6,13 @@
 /*   By: ebellon <ebellon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 14:16:46 by ebellon           #+#    #+#             */
-/*   Updated: 2021/05/28 14:01:18 by ebellon          ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 17:26:14 by ebellon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./Headers/cub3d.h"
 
-void	ft_init_game(t_game *game)
+void	ft_init_game(t_game *game, char *str)
 {
 	game->player.alive = 0;
 	game->player.x = 0;
@@ -30,6 +30,7 @@ void	ft_init_game(t_game *game)
 	game->flip = 0;
 	game->trip_color = 0x000000F0;
 	game->lst_sprite = NULL;
+	ft_parse_main(str, game);
 }
 
 void	clean_window(t_game *game)
@@ -105,10 +106,9 @@ int	main(int ac, char **av)
 	game = ft_calloc(sizeof(t_game), 1);
 	if (!game)
 		exit(1);
-	ft_init_game(game);
 	if (ac != 2)
 		ft_error("Cub3D need exactly 1 argument", game, NULL);
-	ft_parse_main(av[1], game);
+	ft_init_game(game, av[1]);
 	game->mlx = &mlx;
 	game->mlx->mlx_ptr = mlx_init();
 	game->mlx->mlx_win = mlx_new_window(game->mlx->mlx_ptr,
@@ -119,8 +119,9 @@ int	main(int ac, char **av)
 			&game->mlx->bits_per_pixel, &game->mlx->line_length,
 			&game->mlx->endian);
 	ft_check_data(game);
-	mlx_hook(game->mlx->mlx_win, 02, 1L << 0, key_pressed, game);
-	mlx_hook(game->mlx->mlx_win, 03, 1L << 1, key_released, game);
+	mlx_hook(game->mlx->mlx_win, 02, 1L << 0, &key_pressed, game);
+	mlx_hook(game->mlx->mlx_win, 03, 1L << 1, &key_released, game);
+	mlx_hook(game->mlx->mlx_win, 17, 0, &ft_close, game);
 	mlx_loop_hook(game->mlx->mlx_ptr, ft_game, game);
 	mlx_loop(game->mlx->mlx_ptr);
 	return (0);
